@@ -1,0 +1,220 @@
+@use "@/styles/variables.scss";
+
+.empty-cart {
+
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.6rem;
+  color: white;
+  text-align: center;
+  min-width: fit-content;
+  min-height: fit-content;
+  height: 100px;
+  border-radius: 10px;
+  margin-top: 50px;
+  justify-self: center;
+  align-self: center;
+
+  .shopping-cart-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    color: variables.$color-secondary;
+    background-color: lightgrey;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+
+    border: 10px solid rgba(black, 0.2);
+  }
+
+  button {
+    border-color: variables.$color-secondary;
+    background-color: white;
+    color: black;
+
+    &:hover {
+      background-color: variables.$color-secondary;
+    }
+  }
+}
+
+.main-cart-section {
+  margin: 0 auto;
+  max-width: 1200px;
+  margin-top: 30px;
+}
+
+.cart-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  margin-left: 10px;
+}
+
+.cart-section {
+  display: flex;
+  gap: 80px;
+}
+
+.cart-with-title {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.product-image-cart {
+  margin: 10px;
+  border-radius: variables.$radius-md;
+}
+
+.product-info-node {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: variables.$color-primary-light;
+  margin: 10px 0;
+  border-radius: 10px;
+  color: white;
+
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+  }
+}
+
+.p-price {
+  font-size: 1.4rem;
+  font-weight: bold;
+  min-width: max-content;
+}
+
+
+.cart-titles {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.clear-cart-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.finalization-window {
+  width: 400px;
+  height: fit-content;
+  margin: 10px;
+  margin-top: 50px;
+  background-color: variables.$color-primary-light;
+  border-radius: variables.$radius-md;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid rgba(variables.$color-secondary, 0.3);
+
+  &:hover {
+    border-color: variables.$color-secondary;
+    box-shadow: 0 0 20px rgba(variables.$color-secondary, 0.15);
+  }
+}
+
+.total-price-section {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  font-weight: bold;
+  font-size: 1.4rem;
+  padding: 1rem;
+}
+
+.total-price {
+  display: flex;
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding: 1rem;
+}
+
+.total-price-number {
+  color: variables.$color-secondary;
+}
+
+button.finalize-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.5rem;
+  padding: 0.85rem;
+  border: none;
+  border-radius: 10px;
+  background: variables.$color-secondary;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+}
+
+.annotation {
+  color: variables.$color-primary;
+  margin: auto 0;
+}
+
+select {
+  margin-right: 10px;
+  background: rgba(31, 31, 31, 0.8);
+  color: variables.$color-text;
+  border: 1.5px solid rgba(variables.$color-secondary, 0.3);
+  border-radius: variables.$radius-sm;
+  padding: variables.$space-2 variables.$space-3;
+  font-size: variables.$font-size-base;
+  max-width: 60px;
+  cursor: pointer;
+  font-weight: variables.$font-weight-medium;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: variables.$color-secondary;
+    background: rgba(31, 31, 31, 1);
+  }
+
+  &:focus {
+    border-color: variables.$color-secondary;
+    box-shadow: 0 0 0 3px rgba(variables.$color-secondary, 0.2);
+  }
+}
+
+.add-one {
+  color: white;
+
+  .lucide-plus {
+    stroke-width: 3;
+  }
+}
+
+.remove-one {
+  color: white;
+
+  .lucide-minus {
+    stroke-width: 4;
+  }
+}
+
+.delete-and-favorite {
+  display: flex;
+  gap: 10px;
+  margin-right: 20px;
+}
+
+.quantity-number {
+  min-width: 50px;
+  text-align: center;
+}

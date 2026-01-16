@@ -1,0 +1,90 @@
+@use "@/styles/variables";
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 10vh;
+  background-color: variables.$color-primary;
+  padding: 0 variables.$space-4;
+  min-width: auto;
+}
+
+.header-search {
+  margin-left: 600px;
+  width: 1000px;
+}
+
+
+.shop-icon {
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 10px;
+  border-radius: 50%;
+  background: rgba(variables.$color-primary-light, 0.9);
+  color: variables.$color-secondary;
+  border: 1px solid rgba(variables.$color-secondary, 0.35);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px) scale(1.05);
+    border-color: variables.$color-secondary;
+    box-shadow: 0 12px 24px rgba(variables.$color-secondary, 0.25);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 6px 12px rgba(variables.$color-secondary, 0.2);
+  }
+
+  &:focus-visible {
+    outline: 2px solid variables.$color-secondary;
+    outline-offset: 3px;
+  }
+}
+
+.user-tools {
+  display: flex;
+  gap: variables.$space-4;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.tool-button {
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+  padding: variables.$space-2 variables.$space-3;
+  border-radius: variables.$radius-md;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+  }
+}
+
+.quantity {
+  background-color: variables.$color-primary;
+  border-radius: 5px;
+  padding: 2px 6px;
+  font-weight: bold;
+  color: white;
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 22px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}

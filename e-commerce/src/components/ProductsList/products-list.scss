@@ -1,0 +1,28 @@
+@use "@/styles/variables";
+
+.input-and-list-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.products-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: variables.$space-6;
+  width: 50vw;
+  padding-top: 30px;
+}
+
+.filtered-products-search {
+  width: 100%;
+  max-width: 520px;
+  border-radius: 10px;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 14px;
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  background: white;
+  color: black;
+  outline: 0;
+}

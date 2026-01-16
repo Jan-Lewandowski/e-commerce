@@ -1,0 +1,21 @@
+@use "./variables";
+
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-size: variables.$font-size-base;
+  background-color: variables.$color-primary;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

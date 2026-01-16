@@ -1,0 +1,101 @@
+@use "@/styles/variables";
+
+.cart-drawer {
+  position: fixed;
+  top: 4rem;
+  right: variables.$space-4;
+  width: 320px;
+  max-height: 800px;
+  background: variables.$color-primary-light;
+  border: variables.$border-width solid variables.$color-border;
+  border-radius: variables.$radius-md;
+  overflow-y: auto;
+  color: variables.$color-text;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-bottom: variables.$border-width solid variables.$color-border;
+}
+
+.cart-content {
+  padding: 0.75rem;
+}
+
+.cart-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cart-content li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: variables.$border-width solid variables.$color-border;
+}
+
+.cart-content button {
+  background: none;
+  border: none;
+  color: variables.$color-danger;
+  cursor: pointer;
+}
+
+.price {
+  color: variables.$color-secondary;
+}
+
+.sum-of-products {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-top: variables.$border-width solid variables.$color-border;
+  font-weight: bold;
+  font-size: variables.$font-size-lg;
+}
+
+.sum {
+  font-size: 1.1rem;
+  color: variables.$color-secondary;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  gap: variables.$space-3;
+}
+
+.cart-content {
+  display: flex;
+  gap: variables.$space-2;
+}
+
+.cart-text {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.product-image {
+  border-radius: variables.$radius-sm;
+}
+
+.item-quantity {
+  color: variables.$color-primary;
+}
+
+.go-to-cart-button {
+  width: 100%;
+  margin-top: variables.$space-2;
+  background-color: variables.$color-secondary;
+}

@@ -1,0 +1,42 @@
+@use "@/styles/variables";
+
+.btn {
+  padding: variables.$space-2 variables.$space-4;
+  border-radius: variables.$radius-md;
+  font-size: variables.$font-size-sm;
+  border: variables.$border-width solid transparent;
+  background: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+
+
+.btn-default {
+  border: variables.$border-width solid variables.$color-primary;
+  background-color: variables.$color-primary-light;
+  color: variables.$color-primary;
+}
+
+.btn-destructive {
+  border: variables.$border-width solid variables.$color-danger;
+  background-color: variables.$color-danger;
+  color: white;
+}
+
+.btn-outline {
+  border: variables.$border-width solid variables.$color-primary;
+  background: variables.$color-primary;
+  color: white;
+
+}
+
+.btn-ghost {
+  background: transparent;
+  border: none;
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.7;
+}

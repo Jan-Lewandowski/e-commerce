@@ -1,0 +1,98 @@
+@use "@/styles/variables" as variables;
+
+.p-summary-page-container {
+  max-width: 540px;
+  margin: 32px auto;
+  padding: 24px;
+  background: white;
+  border: 1px solid white;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04);
+}
+
+.p-page-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: black;
+}
+
+.p-payment-info {
+  font-size: 18px;
+  font-weight: 600;
+  color: black;
+  margin-bottom: 18px;
+}
+
+.p-summary-page-container form {
+  display: grid;
+  gap: 16px;
+}
+
+.p-summary-page-container label,
+.p-summary-page-container>div:first-of-type {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  color: black;
+}
+
+.p-summary-page-container span {
+  font-weight: 600;
+}
+
+.p-summary-page-container input,
+.p-summary-page-container select,
+.p-summary-page-container .p-readonly-field {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid black;
+  font-size: 14px;
+  background: white;
+}
+
+.p-summary-page-container .p-readonly-field {
+  background: white;
+}
+
+.p-summary-page-container .p-error {
+  color: red;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.p-summary-page-container button[type="submit"] {
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.p-summary-page-container button[type="submit"]:hover {
+  background: black;
+}
+
+.p-result-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
+    padding: 0.85rem;
+    border: none;
+    border-radius: 10px;
+    background: variables.$color-secondary;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+}

@@ -1,0 +1,15 @@
+@use "@/styles/variables";
+
+.wall-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  height: auto;
+  color: white;
+  font-size: 1.3rem;
+}
+
+.blank-div {
+  width: 104.6px;
+}

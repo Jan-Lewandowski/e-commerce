@@ -1,0 +1,11 @@
+@use "@/styles/variables" as variables;
+
+.recommended-products {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: variables.$space-6;
+  width: 50vw;
+  padding-bottom: 30px;
+
+}

@@ -1,0 +1,88 @@
+@use "@/styles/variables" as variables;
+
+.main-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  gap: 20px;
+  color: white;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
+.info {
+  width: fit-content;
+  background-color: variables.$color-primary-light;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.dashboard-button {
+  background-color: variables.$color-golden;
+  color: white;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 323px;
+}
+
+.order-history-section {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  color: white;
+
+  .title {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .no-orders {
+    text-align: center;
+    padding: 40px;
+    font-size: 1.1rem;
+    color: grey;
+  }
+}
+
+.order-card {
+  background-color: variables.$color-primary;
+  border: 1px solid grey;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.order-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid grey;
+}
+
+.order-items {
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      padding: 8px 12px;
+      margin-bottom: 6px;
+      background-color: variables.$color-primary;
+      border-radius: 6px;
+    }
+  }
+}

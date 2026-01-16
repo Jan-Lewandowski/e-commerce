@@ -1,0 +1,225 @@
+@use "../../styles/variables.scss";
+
+.product-node-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: fit-content;
+  gap: variables.$space-6;
+  background-color: variables.$color-primary-light;
+  border-radius: variables.$radius-lg;
+  padding: variables.$space-8;
+  margin-bottom: 30px;
+  box-shadow: variables.$shadow-lg;
+}
+
+.product-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: variables.$font-size-sm;
+  color: variables.$color-primary-light;
+  width: 100%;
+  padding-bottom: variables.$space-4;
+  border-bottom: 1px solid rgba(variables.$color-secondary, 0.2);
+}
+
+.product-topic {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: variables.$font-weight-bold;
+  color: variables.$color-secondary;
+}
+
+.product-description-price-container {
+  display: flex;
+  gap: variables.$space-6;
+}
+
+.product-description-header {
+  display: flex;
+  flex-direction: column;
+  gap: variables.$space-2;
+  margin-bottom: variables.$space-4;
+  padding-bottom: variables.$space-6;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.p-product-layout {
+  display: flex;
+  justify-content: center;
+  gap: variables.$space-8;
+  align-items: flex-start;
+  padding-bottom: variables.$space-8;
+  border-bottom: 2px solid rgba(variables.$color-secondary, 0.2);
+}
+
+.product-details {
+  display: flex;
+  flex-direction: column;
+  border-radius: variables.$radius-md;
+  padding: variables.$space-6;
+  width: 700px;
+  color: variables.$color-text;
+}
+
+.product-title {
+  font-size: 32px;
+  font-weight: variables.$font-weight-bold;
+  line-height: 1.2;
+  color: variables.$color-text;
+  letter-spacing: -0.5px;
+}
+
+.product-rating {
+  color: variables.$color-golden;
+  font-weight: variables.$font-weight-medium;
+  font-size: variables.$font-size-lg;
+}
+
+.product-producer {
+  color: variables.$color-primary-light;
+  font-size: variables.$font-size-sm;
+}
+
+.product-specs {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  gap: variables.$space-3;
+  padding: variables.$space-4;
+  border-radius: variables.$radius-md;
+  border: 2px solid variables.$color-secondary;
+}
+
+.product-spec {
+  display: flex;
+  gap: variables.$space-2;
+  font-size: variables.$font-size-sm;
+  color: white;
+}
+
+.product-spec-label {
+  color: variables.$color-secondary;
+  font-weight: variables.$font-weight-bold;
+  min-width: 80px;
+}
+
+.product-spec-value {
+  color: white;
+}
+
+.product-purchase {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  gap: variables.$space-4;
+  border: 2px solid variables.$color-secondary;
+  border-radius: variables.$radius-md;
+  padding: variables.$space-5;
+  transition: all 0.3s ease;
+}
+
+.product-price {
+  font-size: 36px;
+  font-weight: variables.$font-weight-bold;
+  color: variables.$color-secondary;
+  line-height: 1;
+}
+
+.product-add-cart {
+  display: flex;
+  gap: variables.$space-3;
+  align-items: center;
+
+  button {
+    width: 100%;
+
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+}
+
+select {
+  background: variables.$color-primary;
+  color: variables.$color-text;
+  border-radius: variables.$radius-sm;
+  padding: variables.$space-2 variables.$space-3;
+  font-size: variables.$font-size-base;
+  outline: none;
+  min-width: 100px;
+  cursor: pointer;
+  font-weight: variables.$font-weight-medium;
+  transition: all 0.2s ease;
+
+
+}
+
+.stock {
+  font-size: variables.$font-size-sm;
+  color: white;
+}
+
+img {
+  border-radius: variables.$radius-lg;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.favorite {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  background-color: inherit;
+  border: none;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+.correlated-products {
+  padding-top: variables.$space-8;
+
+}
+
+.correlated-products-list {
+  display: flex;
+  justify-content: flex-start;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  gap: variables.$space-6;
+  padding-top: variables.$space-4;
+  padding-bottom: variables.$space-4;
+}
+
+.correlated-product-card {
+  width: 100%;
+  min-width: 200px;
+  border-radius: variables.$radius-lg;
+  padding: variables.$space-4;
+  box-shadow: variables.$shadow-lg;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  color: variables.$color-text;
+  text-align: center;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.correlated-product-price {
+  font-size: variables.$font-size-lg;
+  font-weight: variables.$font-weight-bold;
+  color: variables.$color-secondary;
+}
+
+.product-producer {
+  color: white;
+}

@@ -1,0 +1,14 @@
+@use "@/styles/variables" as variables;
+
+.app-footer {
+  position: static;
+  width: 100%;
+  padding: 15px 0;
+  text-align: center;
+  background-color: variables.$color-primary-light;
+  font-size: 14px;
+  color: white;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(4px);
+  margin-top: auto;
+}

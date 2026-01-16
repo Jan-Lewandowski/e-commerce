@@ -1,0 +1,784 @@
+{
+  "categories": [
+    "Laptopy",
+    "Smartfony i smartwatche",
+    "Podzespoły komputerowe",
+    "Gaming i streaming",
+    "Urządzenia peryferyjne",
+    "Akcesoria"
+  ],
+  "products": [
+    {
+      "id": "LAP-001",
+      "category": "Laptopy",
+      "name": "Laptop Lenovo IdeaPad 5 15",
+      "brand": "Lenovo",
+      "price": 3299,
+      "stock": 2,
+      "rating": 4.5,
+      "thumbnail": "/images/products/lenovo-ideapad-5.jpg",
+      "tags": [
+        "laptop",
+        "office",
+        "student",
+        "intel",
+        "ssd",
+        "15-inch"
+      ],
+      "specs": {
+        "procesor": "Intel Core i5-12450H",
+        "ram": "16 GB DDR4",
+        "dysk": "512 GB SSD",
+        "grafika": "Intel Iris Xe",
+        "ekran": "15.6” IPS 1920x1080 60Hz"
+      },
+      "description": "Lekki laptop do codziennej pracy i nauki, z najnowszą generacją procesora Intel."
+    },
+    {
+      "id": "LAP-002",
+      "category": "Laptopy",
+      "name": "Apple MacBook Air 13 M2",
+      "brand": "Apple",
+      "price": 5899,
+      "stock": 12,
+      "rating": 4.9,
+      "thumbnail": "/images/products/macbook-air-m2.jpg",
+      "tags": [
+        "laptop",
+        "ultrabook",
+        "apple",
+        "office",
+        "student",
+        "lightweight"
+      ],
+      "specs": {
+        "procesor": "Apple M2",
+        "ram": "8 GB",
+        "dysk": "256 GB SSD",
+        "ekran": "13.6” Liquid Retina",
+        "waga": "1.24 kg"
+      },
+      "description": "Ultrabook o doskonałej wydajności i czasie pracy na baterii."
+    },
+    {
+      "id": "SMART-001",
+      "category": "Smartfony i smartwatche",
+      "name": "Samsung Galaxy S23",
+      "brand": "Samsung",
+      "price": 3599,
+      "stock": 55,
+      "rating": 4.8,
+      "thumbnail": "/images/products/galaxy-s23.jpg",
+      "tags": [
+        "smartphone",
+        "android",
+        "flagship",
+        "camera",
+        "5g"
+      ],
+      "specs": {
+        "procesor": "Snapdragon 8 Gen 2",
+        "ram": "8 GB",
+        "pamiec": "128 GB",
+        "bateria": "3900 mAh",
+        "aparat": "50 Mpix"
+      },
+      "description": "Wysokowydajny smartfon z flagowym aparatem i świetnym ekranem AMOLED."
+    },
+    {
+      "id": "SMART-002",
+      "category": "Smartfony i smartwatche",
+      "name": "Apple Watch Series 9 GPS 45mm",
+      "brand": "Apple",
+      "price": 2199,
+      "stock": 30,
+      "rating": 4.9,
+      "thumbnail": "/images/products/apple-watch-9.jpg",
+      "tags": [
+        "smartwatch",
+        "apple",
+        "fitness",
+        "health",
+        "wearable"
+      ],
+      "specs": {
+        "procesor": "Apple S9",
+        "gps": true,
+        "ekran": "Always-On Retina",
+        "wodoodpornosc": "50m"
+      },
+      "description": "Smartwatch z zaawansowanymi funkcjami zdrowotnymi i fitness."
+    },
+    {
+      "id": "PC-001",
+      "category": "Podzespoły komputerowe",
+      "name": "AMD Ryzen 5 7600",
+      "brand": "AMD",
+      "price": 999,
+      "stock": 62,
+      "rating": 4.7,
+      "thumbnail": "/images/products/ryzen-7600.jpg",
+      "tags": [
+        "cpu",
+        "processor",
+        "gaming",
+        "amd",
+        "desktop"
+      ],
+      "specs": {
+        "rdzenie": 6,
+        "wątki": 12,
+        "taktowanie": "3.8 GHz (5.1 GHz Boost)",
+        "gniazdo": "AM5"
+      },
+      "description": "Wszechstronny procesor dla graczy i twórców treści."
+    },
+    {
+      "id": "PC-002",
+      "category": "Podzespoły komputerowe",
+      "name": "NVIDIA GeForce RTX 4070 ASUS Dual 12GB",
+      "brand": "ASUS",
+      "price": 2999,
+      "stock": 25,
+      "rating": 4.9,
+      "thumbnail": "/images/products/rtx-4070.jpg",
+      "tags": [
+        "gpu",
+        "graphics-card",
+        "gaming",
+        "nvidia",
+        "raytracing"
+      ],
+      "specs": {
+        "pamiec": "12 GB GDDR6X",
+        "taktowanie": "2505 MHz",
+        "zasilanie": "650W",
+        "zlacza": "HDMI 2.1, DisplayPort 1.4a"
+      },
+      "description": "Wydajna karta graficzna idealna do gamingu w 1440p."
+    },
+    {
+      "id": "GAME-001",
+      "category": "Gaming i streaming",
+      "name": "Konsola PlayStation 5 Slim",
+      "brand": "Sony",
+      "price": 2699,
+      "stock": 18,
+      "rating": 4.9,
+      "thumbnail": "/images/products/ps5-slim.jpg",
+      "tags": [
+        "console",
+        "gaming",
+        "sony",
+        "4k",
+        "entertainment"
+      ],
+      "specs": {
+        "dysk": "1 TB SSD",
+        "rozdzielczosc": "4K HDR",
+        "kontroler": "DualSense"
+      },
+      "description": "Najnowsza generacja konsoli Sony z ulepszonym designem Slim."
+    },
+    {
+      "id": "GAME-002",
+      "category": "Gaming i streaming",
+      "name": "Mikrofon HyperX QuadCast S",
+      "brand": "HyperX",
+      "price": 699,
+      "stock": 34,
+      "rating": 4.8,
+      "thumbnail": "/images/products/hyperx-quadcast-s.jpg",
+      "tags": [
+        "microphone",
+        "streaming",
+        "gaming",
+        "audio",
+        "rgb"
+      ],
+      "specs": {
+        "podświetlenie": "RGB",
+        "charakterystyka": "Kardioidalna / Stereo / Omnidirectional / Bidirectional",
+        "przeznaczenie": "Streaming, podcasting"
+      },
+      "description": "Profesjonalny mikrofon z RGB i wysoką jakością dźwięku."
+    },
+    {
+      "id": "PER-001",
+      "category": "Urządzenia peryferyjne",
+      "name": "Klawiatura Logitech MX Keys",
+      "brand": "Logitech",
+      "price": 479,
+      "stock": 44,
+      "rating": 4.9,
+      "thumbnail": "/images/products/logitech-mx-keys.jpg",
+      "tags": [
+        "keyboard",
+        "office",
+        "wireless",
+        "productivity"
+      ],
+      "specs": {
+        "typ": "Membranowa",
+        "podświetlenie": "Białe",
+        "łączenie": "Bluetooth / USB Receiver"
+      },
+      "description": "Komfortowa klawiatura premium do pracy i codziennego użytku."
+    },
+    {
+      "id": "PER-002",
+      "category": "Urządzenia peryferyjne",
+      "name": "Mysz Razer DeathAdder V3",
+      "brand": "Razer",
+      "price": 349,
+      "stock": 51,
+      "rating": 4.8,
+      "thumbnail": "/images/products/razer-deathadder-v3.jpg",
+      "tags": [
+        "mouse",
+        "gaming",
+        "esport",
+        "lightweight"
+      ],
+      "specs": {
+        "sensor": "Razer Focus Pro 30K",
+        "przeznaczenie": "Gaming",
+        "waga": "59 g"
+      },
+      "description": "Lekka, topowa mysz gamingowa z zaawansowanym sensorem."
+    },
+    {
+      "id": "ACC-001",
+      "category": "Akcesoria",
+      "name": "Powerbank Baseus 20 000mAh 30W",
+      "brand": "Baseus",
+      "price": 129,
+      "stock": 120,
+      "rating": 4.7,
+      "thumbnail": "/images/products/baseus-powerbank.jpg",
+      "tags": [
+        "powerbank",
+        "charging",
+        "mobile",
+        "usb-c",
+        "travel"
+      ],
+      "specs": {
+        "pojemnosc": "20 000 mAh",
+        "moc": "30W PD",
+        "porty": "USB-C, USB-A"
+      },
+      "description": "Wydajny powerbank z szybkim ładowaniem."
+    },
+    {
+      "id": "ACC-002",
+      "category": "Akcesoria",
+      "name": "Słuchawki Apple AirPods 3",
+      "brand": "Apple",
+      "price": 899,
+      "stock": 48,
+      "rating": 4.8,
+      "thumbnail": "/images/products/airpods-3.jpg",
+      "tags": [
+        "headphones",
+        "wireless",
+        "audio",
+        "apple",
+        "bluetooth"
+      ],
+      "specs": {
+        "dzwiek": "Spatial Audio",
+        "laczenie": "Bluetooth",
+        "czasPracy": "6h na jednym ładowaniu"
+      },
+      "description": "Słuchawki bezprzewodowe premium z obsługą Spatial Audio."
+    },
+    {
+      "id": "LAP-003",
+      "category": "Laptopy",
+      "name": "Dell XPS 13",
+      "brand": "Dell",
+      "price": 5499,
+      "stock": 8,
+      "rating": 4.8,
+      "thumbnail": "/images/products/dell-xps-13.jpg",
+      "tags": [
+        "laptop",
+        "ultrabook",
+        "windows",
+        "office",
+        "premium"
+      ],
+      "specs": {
+        "procesor": "Intel Core i7-1360P",
+        "ram": "16 GB LPDDR5",
+        "dysk": "512 GB SSD",
+        "ekran": "13.4” OLED 2880x1800",
+        "waga": "1.2 kg"
+      },
+      "description": "Premium ultrabook z pięknym ekranem OLED i wysoką mobilnością."
+    },
+    {
+      "id": "LAP-004",
+      "category": "Laptopy",
+      "name": "ASUS Zenbook 14 OLED",
+      "brand": "ASUS",
+      "price": 4299,
+      "stock": 15,
+      "rating": 4.7,
+      "thumbnail": "/images/products/asus-zenbook-14-oled.jpg",
+      "tags": [
+        "laptop",
+        "oled",
+        "amd",
+        "lightweight"
+      ],
+      "specs": {
+        "procesor": "AMD Ryzen 7 7730U",
+        "ram": "16 GB",
+        "dysk": "1 TB SSD",
+        "ekran": "14” OLED 2880x1800"
+      },
+      "description": "Elegancki laptop z ekranem OLED i długim czasem pracy na baterii."
+    },
+    {
+      "id": "LAP-005",
+      "category": "Laptopy",
+      "name": "HP Pavilion 15",
+      "brand": "HP",
+      "price": 2799,
+      "stock": 20,
+      "rating": 4.4,
+      "thumbnail": "/images/products/hp-pavilion-15.jpg",
+      "tags": [
+        "laptop",
+        "student",
+        "office",
+        "intel"
+      ],
+      "specs": {
+        "procesor": "Intel Core i5-1235U",
+        "ram": "8 GB DDR4",
+        "dysk": "512 GB SSD",
+        "grafika": "Intel UHD",
+        "ekran": "15.6” IPS Full HD"
+      },
+      "description": "Solidny laptop do nauki i codziennej pracy w atrakcyjnej cenie."
+    },
+    {
+      "id": "LAP-006",
+      "category": "Laptopy",
+      "name": "Lenovo Legion 5",
+      "brand": "Lenovo",
+      "price": 5999,
+      "stock": 10,
+      "rating": 4.8,
+      "thumbnail": "/images/products/lenovo-legion-5.jpg",
+      "tags": [
+        "laptop",
+        "gaming",
+        "nvidia",
+        "high-performance"
+      ],
+      "specs": {
+        "procesor": "AMD Ryzen 7 6800H",
+        "ram": "16 GB DDR5",
+        "dysk": "1 TB SSD",
+        "grafika": "RTX 3060 6GB",
+        "ekran": "15.6” 165Hz"
+      },
+      "description": "Gamingowy laptop z wysoką wydajnością i szybkim ekranem."
+    },
+    {
+      "id": "SMART-003",
+      "category": "Smartfony i smartwatche",
+      "name": "iPhone 15 Pro",
+      "brand": "Apple",
+      "price": 6499,
+      "stock": 40,
+      "rating": 4.9,
+      "thumbnail": "/images/products/iphone-15-pro.jpg",
+      "tags": [
+        "smartphone",
+        "ios",
+        "flagship",
+        "titanium",
+        "camera"
+      ],
+      "specs": {
+        "procesor": "A17 Pro",
+        "ram": "8 GB",
+        "pamiec": "256 GB",
+        "bateria": "3274 mAh",
+        "aparat": "48 Mpix główny"
+      },
+      "description": "Flagowy smartfon Apple z tytanową obudową i zaawansowanym systemem aparatów."
+    },
+    {
+      "id": "SMART-004",
+      "category": "Smartfony i smartwatche",
+      "name": "Google Pixel 8",
+      "brand": "Google",
+      "price": 3499,
+      "stock": 60,
+      "rating": 4.7,
+      "thumbnail": "/images/products/google-pixel-8.jpg",
+      "tags": [
+        "smartphone",
+        "android",
+        "ai",
+        "camera"
+      ],
+      "specs": {
+        "procesor": "Google Tensor G3",
+        "ram": "8 GB",
+        "pamiec": "128 GB",
+        "aparat": "50 Mpix"
+      },
+      "description": "Smartfon z czystym Androidem i najlepszymi funkcjami AI w fotografii."
+    },
+    {
+      "id": "SMART-005",
+      "category": "Smartfony i smartwatche",
+      "name": "Xiaomi 14",
+      "brand": "Xiaomi",
+      "price": 3999,
+      "stock": 35,
+      "rating": 4.8,
+      "thumbnail": "/images/products/xiaomi-14.jpg",
+      "tags": [
+        "smartphone",
+        "android",
+        "flagship",
+        "fast-charge"
+      ],
+      "specs": {
+        "procesor": "Snapdragon 8 Gen 3",
+        "ram": "12 GB",
+        "pamiec": "256 GB",
+        "bateria": "4610 mAh 90W"
+      },
+      "description": "Wydajny flagowiec z ultraszybkim ładowaniem i Leica optyką."
+    },
+    {
+      "id": "SMART-006",
+      "category": "Smartfony i smartwatche",
+      "name": "Samsung Galaxy Watch 6 44mm",
+      "brand": "Samsung",
+      "price": 1499,
+      "stock": 25,
+      "rating": 4.6,
+      "thumbnail": "/images/products/samsung-galaxy-watch-6.jpg",
+      "tags": [
+        "smartwatch",
+        "android",
+        "fitness",
+        "health"
+      ],
+      "specs": {
+        "ekran": "Super AMOLED",
+        "gps": true,
+        "wodoodpornosc": "5 ATM"
+      },
+      "description": "Zaawansowany smartwatch z monitorowaniem zdrowia i sportu."
+    },
+    {
+      "id": "PC-003",
+      "category": "Podzespoły komputerowe",
+      "name": "Intel Core i7-13700K",
+      "brand": "Intel",
+      "price": 1899,
+      "stock": 40,
+      "rating": 4.9,
+      "thumbnail": "/images/products/intel-core-i7-13700k.jpg",
+      "tags": [
+        "cpu",
+        "processor",
+        "gaming",
+        "intel"
+      ],
+      "specs": {
+        "rdzenie": 16,
+        "wątki": 24,
+        "taktowanie": "3.4 GHz (5.4 GHz Boost)",
+        "gniazdo": "LGA1700"
+      },
+      "description": "Mocny procesor hybrydowy do gamingu i pracy wielozadaniowej."
+    },
+    {
+      "id": "PC-004",
+      "category": "Podzespoły komputerowe",
+      "name": "Corsair Vengeance 32GB DDR5 6000MHz",
+      "brand": "Corsair",
+      "price": 599,
+      "stock": 80,
+      "rating": 4.8,
+      "thumbnail": "/images/products/corsair-vengeance-32gb-ddr5.jpg",
+      "tags": [
+        "ram",
+        "memory",
+        "ddr5",
+        "gaming"
+      ],
+      "specs": {
+        "pojemnosc": "32 GB (2x16GB)",
+        "predkosc": "6000 MHz",
+        "opoznienie": "CL36"
+      },
+      "description": "Szybka pamięć RAM DDR5 dla najnowszych platform."
+    },
+    {
+      "id": "PC-005",
+      "category": "Podzespoły komputerowe",
+      "name": "Samsung 990 PRO 2TB SSD",
+      "brand": "Samsung",
+      "price": 899,
+      "stock": 50,
+      "rating": 4.9,
+      "thumbnail": "/images/products/samsung-990-pro-2tb.jpg",
+      "tags": [
+        "ssd",
+        "storage",
+        "nvme",
+        "pcie4"
+      ],
+      "specs": {
+        "pojemnosc": "2 TB",
+        "predkosc odczytu": "7450 MB/s",
+        "interfejs": "PCIe 4.0"
+      },
+      "description": "Ultraszybki dysk SSD NVMe do gier i aplikacji."
+    },
+    {
+      "id": "PC-006",
+      "category": "Podzespoły komputerowe",
+      "name": "RTX 4060 Ti Gigabyte 8GB",
+      "brand": "Gigabyte",
+      "price": 2199,
+      "stock": 30,
+      "rating": 4.7,
+      "thumbnail": "/images/products/rtx-4060-ti-gigabyte.jpg",
+      "tags": [
+        "gpu",
+        "nvidia",
+        "gaming",
+        "dlss"
+      ],
+      "specs": {
+        "pamiec": "8 GB GDDR6",
+        "taktowanie": "2535 MHz"
+      },
+      "description": "Efektywna karta graficzna do 1080p i 1440p z DLSS 3."
+    },
+    {
+      "id": "GAME-003",
+      "category": "Gaming i streaming",
+      "name": "Xbox Series X",
+      "brand": "Microsoft",
+      "price": 2699,
+      "stock": 15,
+      "rating": 4.8,
+      "thumbnail": "/images/products/xbox-series-x.jpg",
+      "tags": [
+        "console",
+        "gaming",
+        "microsoft",
+        "4k"
+      ],
+      "specs": {
+        "dysk": "1 TB SSD",
+        "rozdzielczosc": "4K 120Hz"
+      },
+      "description": "Najmocniejsza konsola Microsoft z szybkim ładowaniem gier."
+    },
+    {
+      "id": "GAME-004",
+      "category": "Gaming i streaming",
+      "name": "Elgato Stream Deck MK.2",
+      "brand": "Elgato",
+      "price": 699,
+      "stock": 20,
+      "rating": 4.9,
+      "thumbnail": "/images/products/elgato-stream-deck-mk2.jpg",
+      "tags": [
+        "streaming",
+        "controller",
+        "productivity"
+      ],
+      "specs": {
+        "przyciski": 15,
+        "lcd": true
+      },
+      "description": "Kontroler do streamingu i zarządzania scenami."
+    },
+    {
+      "id": "GAME-005",
+      "category": "Gaming i streaming",
+      "name": "Logitech G Pro X Headset",
+      "brand": "Logitech",
+      "price": 549,
+      "stock": 45,
+      "rating": 4.7,
+      "thumbnail": "/images/products/logitech-g-pro-x-headset.jpg",
+      "tags": [
+        "headset",
+        "gaming",
+        "audio",
+        "microphone"
+      ],
+      "specs": {
+        "dzwiek": "7.1 Surround",
+        "mikrofon": "Odłączany"
+      },
+      "description": "Profesjonalne słuchawki gamingowe z czystym dźwiękiem."
+    },
+    {
+      "id": "PER-003",
+      "category": "Urządzenia peryferyjne",
+      "name": "Monitor Samsung Odyssey G7 27",
+      "brand": "Samsung",
+      "price": 2499,
+      "stock": 12,
+      "rating": 4.8,
+      "thumbnail": "/images/products/samsung-odyssey-g7-27.jpg",
+      "tags": [
+        "monitor",
+        "gaming",
+        "curved",
+        "1440p"
+      ],
+      "specs": {
+        "rozdzielczosc": "2560x1440",
+        "odswiezanie": "240Hz",
+        "panel": "VA Curved"
+      },
+      "description": "Zakrzywiony monitor gamingowy z wysokim odświeżaniem."
+    },
+    {
+      "id": "PER-004",
+      "category": "Urządzenia peryferyjne",
+      "name": "Klawiatura Keychron K2 Wireless",
+      "brand": "Keychron",
+      "price": 399,
+      "stock": 60,
+      "rating": 4.6,
+      "thumbnail": "/images/products/keychron-k2-wireless.jpg",
+      "tags": [
+        "keyboard",
+        "mechanical",
+        "wireless",
+        "compact"
+      ],
+      "specs": {
+        "przelaczniki": "Gateron Brown",
+        "podświetlenie": "RGB"
+      },
+      "description": "Kompaktowa klawiatura mechaniczna bezprzewodowa."
+    },
+    {
+      "id": "PER-005",
+      "category": "Urządzenia peryferyjne",
+      "name": "Logitech MX Master 3S",
+      "brand": "Logitech",
+      "price": 499,
+      "stock": 55,
+      "rating": 4.9,
+      "thumbnail": "/images/products/logitech-mx-master-3s.jpg",
+      "tags": [
+        "mouse",
+        "productivity",
+        "wireless",
+        "ergonomic"
+      ],
+      "specs": {
+        "sensor": "8000 DPI",
+        "bateria": "70 dni"
+      },
+      "description": "Ergonomiczna mysz premium do pracy biurowej."
+    },
+    {
+      "id": "ACC-003",
+      "category": "Akcesoria",
+      "name": "Etui Spigen Rugged Armor do iPhone 15",
+      "brand": "Spigen",
+      "price": 79,
+      "stock": 200,
+      "rating": 4.7,
+      "thumbnail": "/images/products/etui-spigen-rugged-armor-iphone-15.jpg",
+      "tags": [
+        "ios",
+        "case",
+        "phone-case",
+        "protection",
+        "apple"
+      ],
+      "specs": {
+        "material": "TPU",
+        "ochrony": "Military Grade"
+      },
+      "description": "Wytrzymałe etui ochronne z klasycznym designem."
+    },
+    {
+      "id": "ACC-004",
+      "category": "Akcesoria",
+      "name": "Ładowarka Anker 65W GaN",
+      "brand": "Anker",
+      "price": 199,
+      "stock": 100,
+      "rating": 4.8,
+      "thumbnail": "/images/products/ladowarka-anker-65w-gan.jpg",
+      "tags": [
+        "charger",
+        "usb-c",
+        "fast-charge",
+        "gan"
+      ],
+      "specs": {
+        "moc": "65W",
+        "porty": "2x USB-C, 1x USB-A"
+      },
+      "description": "Kompaktowa ładowarka GaN do laptopów i smartfonów."
+    },
+    {
+      "id": "ACC-005",
+      "category": "Akcesoria",
+      "name": "Słuchawki Sony WH-1000XM5",
+      "brand": "Sony",
+      "price": 1599,
+      "stock": 20,
+      "rating": 4.9,
+      "thumbnail": "/images/products/sony-wh-1000xm5.jpg",
+      "tags": [
+        "headphones",
+        "noise-cancelling",
+        "wireless",
+        "audio"
+      ],
+      "specs": {
+        "anc": "Aktywna redukcja szumów",
+        "czasPracy": "30h"
+      },
+      "description": "Topowe słuchawki z najlepszą redukcją hałasu na rynku."
+    },
+    {
+      "id": "ACC-006",
+      "category": "Akcesoria",
+      "name": "Hub USB-C Baseus 7-in-1",
+      "brand": "Baseus",
+      "price": 249,
+      "stock": 70,
+      "rating": 4.6,
+      "thumbnail": "/images/products/hub-usb-c-baseus-7-in-1.jpg",
+      "tags": [
+        "hub",
+        "usb-c",
+        "docking",
+        "ports"
+      ],
+      "specs": {
+        "porty": "HDMI 4K, SD, USB 3.0"
+      },
+      "description": "Wielofunkcyjny hub do laptopów z USB-C."
+    }
+  ]
+}

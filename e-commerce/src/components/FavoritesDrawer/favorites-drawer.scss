@@ -1,0 +1,50 @@
+@use "@/styles/variables";
+
+.favorites-drawer {
+  position: fixed;
+  top: 4rem;
+  right: variables.$space-4;
+  width: 320px;
+  max-height: 800px;
+  background: variables.$color-primary-light;
+  border: variables.$border-width solid variables.$color-border;
+  border-radius: variables.$radius-md;
+  overflow-y: auto;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  color: white;
+}
+
+.favorites-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-bottom: variables.$border-width solid variables.$color-border;
+}
+
+.favorites-content {
+  padding: 0.75rem;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: variables.$border-width solid variables.$color-border;
+  }
+
+  button {
+    background: none;
+    border: none;
+    color: variables.$color-danger;
+    cursor: pointer;
+  }
+}

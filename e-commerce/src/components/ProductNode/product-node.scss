@@ -1,0 +1,120 @@
+@use "@/styles/variables";
+
+.product-card {
+  width: 100%;
+  overflow: hidden;
+  margin-inline: auto;
+  display: flex;
+  padding: variables.$space-3;
+  background-color: variables.$color-primary-light;
+  border-radius: variables.$radius-md;
+  color: white;
+  box-shadow: 3px 3px 10px rgba(0, 0.3, 0, 0.5);
+  cursor: pointer;
+}
+
+
+
+.product-image {
+  display: grid;
+  place-items: center;
+
+  img {
+    border-radius: variables.$radius-md;
+  }
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: variables.$space-1;
+  flex: 1 1 auto;
+  font-size: variables.$font-size-sm;
+  margin: 0;
+  overflow: hidden;
+  margin-left: 20px;
+  margin-right: 6px;
+}
+
+.product-name {
+  font-size: 1.2rem;
+}
+
+.product-info {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: variables.$space-1;
+  ;
+
+  h3,
+  p {
+    margin: 0;
+  }
+}
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 4px;
+  width: fit-content;
+  border-radius: variables.$radius-sm;
+  background: variables.$color-golden;
+  color: white;
+}
+
+.specs {
+  display: flex;
+  flex-direction: column;
+  gap: variables.$space-1;
+}
+
+.spec-chip {
+  align-items: center;
+  font-size: variables.$font-size-sm;
+  font-size: 1rem;
+}
+
+.spec-key {
+  color: variables.$color-primary;
+}
+
+.price {
+  margin: 0;
+  margin-left: auto;
+  border-radius: variables.$radius-sm;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.product-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: variables.$space-4;
+
+  .add-to-cart-button {
+    max-width: fit-content;
+    padding: variables.$space-2;
+    font-size: variables.$font-size-sm;
+    border: variables.$border-width solid variables.$color-border;
+    border-radius: variables.$radius-sm;
+    background: white;
+    cursor: pointer;
+  }
+
+  .add-to-cart-button:hover {
+    background: #cfcfcf;
+  }
+
+  .favorite {
+    max-width: fit-content;
+    padding: variables.$space-2;
+    font-size: variables.$font-size-sm;
+    border: variables.$border-width solid variables.$color-border;
+    border-radius: variables.$radius-sm;
+    background: white;
+    cursor: pointer;
+  }
+}

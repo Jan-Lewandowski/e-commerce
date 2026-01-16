@@ -1,0 +1,27 @@
+@use "@/components/CartDrawer/cart-drawer.scss";
+@use "@/components/CartNotificationPortal/cart-notification-portal.scss";
+@use "@/components/FavoritesDrawer/favorites-drawer.scss";
+@use "@/components/FilterPanel/filter-panel.scss";
+@use "@/components/FiltersAsideForm/filters-aside-form.scss";
+@use "@/components/Footer/footer.scss";
+@use "@/components/Header/header.scss";
+@use "@/components/MaterialUI/account-menu.scss";
+@use "@/components/ProductClient/product-client.scss";
+@use "@/components/ProductNode/product-node.scss";
+@use "@/components/ProductsList/products-list.scss";
+@use "@/components/RecommendedProducts/recommended-products.scss";
+@use "@/components/SearchInput/search-input.scss";
+@use "@/components/SignupForm/signup-form.scss";
+@use "@/components/ui/Button/button.scss";
+@use "@/components/WallHeader/wall-header.scss";
+
+@use "@/styles/body.scss";
+@use "@/styles/cart.scss";
+@use "@/styles/dashboard.scss";
+@use "@/styles/home.scss";
+@use "@/styles/order.scss";
+@use "@/styles/payment.scss";
+@use "@/styles/profile.scss";
+@use "@/styles/signup.scss";
+@use "@/styles/summary.scss";
+@use "@/styles/variables.scss";

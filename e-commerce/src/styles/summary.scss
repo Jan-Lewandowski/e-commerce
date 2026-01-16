@@ -1,0 +1,190 @@
+@use "@/styles/variables.scss";
+
+.s-summary-page-container {
+  max-width: 1200px;
+  margin: 30px auto 60px;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  color: variables.$color-text;
+}
+
+.s-page-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+  margin-left: 4px;
+}
+
+.s-summary-and-buy-section {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.s-summary-info {
+  display: flex;
+  flex-direction: column;
+  background-color: variables.$color-primary-light;
+  padding: 1rem;
+  border-radius: variables.$radius-md;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  gap: 14px;
+}
+
+
+.s-destination-details {
+  display: grid;
+  gap: 6px;
+  font-size: 0.98rem;
+  line-height: 1.4;
+
+  div:first-child {
+    font-weight: 600;
+  }
+}
+
+.s-payment-details {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.s-products-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 1.1rem 0.9rem;
+  background: linear-gradient(180deg, rgba(variables.$color-primary-light, 0.96), rgba(variables.$color-primary-light, 0.9));
+}
+
+.s-product-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: variables.$radius-sm;
+  border: 1px solid rgba(variables.$color-secondary, 0.2);
+  background: rgba(255, 255, 255, 0.04);
+  transition: all 0.2s ease;
+
+  .s-product-title {
+    font-weight: 600;
+    color: white;
+  }
+
+  .s-product-quantity {
+    color: rgba(variables.$color-text, 0.8);
+    font-size: 0.95rem;
+  }
+
+  .s-product-price {
+    margin-left: auto;
+    font-weight: 700;
+    color: variables.$color-secondary;
+  }
+}
+
+.s-buy-info {
+  background-color: variables.$color-primary-light;
+  padding: 1.4rem;
+  border-radius: variables.$radius-md;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  position: sticky;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: right;
+}
+
+.s-to-pay {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.s-total-price-summary {
+  font-size: 1.6rem;
+  color: variables.$color-secondary;
+}
+
+.s-buy-button {
+  width: 100%;
+  border: none;
+  border-radius: variables.$radius-sm;
+  background: variables.$color-secondary;
+  color: white;
+  font-weight: 700;
+  padding: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 10px 24px rgba(variables.$color-secondary, 0.3);
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 16px rgba(variables.$color-secondary, 0.22);
+  }
+}
+
+
+.s-total-price-summary {
+  color: white;
+}
+
+h3 {
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+  color: variables.$color-secondary;
+}
+
+.s-summary-back-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: variables.$color-primary;
+  padding: 10px;
+  color: white;
+  border-radius: variables.$radius-sm;
+}
+
+.back-to-home-icon {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 10px;
+  border-radius: 50%;
+  background: rgba(variables.$color-primary-light, 0.9);
+  color: variables.$color-secondary;
+  border: 1px solid rgba(variables.$color-secondary, 0.35);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px) scale(1.05);
+    background: rgba(variables.$color-secondary, 0.15);
+    border-color: variables.$color-secondary;
+    box-shadow: 0 12px 24px rgba(variables.$color-secondary, 0.25);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 6px 12px rgba(variables.$color-secondary, 0.2);
+  }
+
+  &:focus-visible {
+    outline: 2px solid variables.$color-secondary;
+    outline-offset: 3px;
+  }
+}

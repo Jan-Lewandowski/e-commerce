@@ -1,0 +1,57 @@
+@use "@/styles/variables";
+
+.filter-panel {
+  width: 100%;
+  padding: variables.$space-3 0;
+  background-color: variables.$color-primary;
+  border-bottom: 2px solid variables.$color-secondary;
+  border-radius: 0 0 variables.$radius-md variables.$radius-md;
+
+  ul {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    padding: 0 variables.$space-3;
+    margin: 0;
+    overflow-x: auto;
+    gap: variables.$space-3;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .category-button {
+      padding: variables.$space-2 variables.$space-4;
+      border-radius: variables.$radius-md;
+      cursor: pointer;
+      color: white;
+      background-color: variables.$color-primary-light;
+      border: 1px solid transparent;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+      transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+
+      &:hover {
+        background-color: variables.$color-secondary;
+        color: white;
+        border-color: variables.$color-secondary;
+      }
+
+      &.active {
+        background-color: variables.$color-secondary;
+        color: white;
+        border-color: variables.$color-secondary;
+      }
+
+      &:focus-visible {
+        outline: 2px solid variables.$color-secondary;
+        outline-offset: 2px;
+      }
+    }
+  }
+}
