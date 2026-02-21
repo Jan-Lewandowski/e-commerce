@@ -1,53 +1,53 @@
 # E-Commerce
 
-Aplikacja e-commerce zbudowana w Next.js, umożliwiająca przegląd produktów, filtrowanie, zarządzanie koszykiem i ulubionymi, składanie zamówień oraz podgląd historii zamówień.
+An e-commerce application built with Next.js, allowing users to browse products, filter them, manage cart and favorites, place orders, and view order history.
 
-## Technologie
+## Technologies
 - Frontend: Next.js 16, React 19, TypeScript
-- UI i stylowanie: SCSS, Material UI, Lucide Icons
-- Formularze i walidacja: Formik, Yup
-- Wizualizacja danych: Recharts
-- Dane aplikacji: lokalny plik JSON + LocalStorage
+- UI and styling: SCSS, Material UI, Lucide Icons
+- Forms and validation: Formik, Yup
+- Data visualization: Recharts
+- Application data: local JSON file + LocalStorage
 
-## Wymagania
+## Requirements
 - Node.js 18+
 - npm 9+
 
-## Uruchomienie
+## Run
 
-### 1) Instalacja zależności
+### 1) Install dependencies
 ```bash
 npm install
 ```
 
-### 2) Start środowiska developerskiego
+### 2) Start development environment
 ```bash
 npm run dev
 ```
 
-Aplikacja będzie dostępna pod: http://localhost:3000
+The application will be available at: http://localhost:3000
 
-### 3) Build produkcyjny
+### 3) Production build
 ```bash
 npm run build
 npm run start
 ```
 
 
-## Dane i przechowywanie
-- Katalog produktów oraz kategorii jest zdefiniowany w `src/data.json`.
-- Dane użytkownika, koszyk, ulubione, szczegóły zamówienia i historia zamówień są zapisywane w LocalStorage przeglądarki.
+## Data and storage
+- The product and category catalog is defined in `src/data.json`.
+- User data, cart, favorites, order details, and order history are stored in browser LocalStorage.
 
-## Funkcje
-- Rejestracja użytkownika i podstawowe zarządzanie kontem
-- Przegląd produktów z wyszukiwarką, filtrowaniem i kategoriami
-- Koszyk zakupowy z modyfikacją ilości produktów
-- Lista ulubionych produktów
-- Proces zamówienia (dostawa, adres, płatność, podsumowanie)
-- Historia zamówień na koncie użytkownika
-- Panel administratora z podglądem i wyszukiwaniem zamówień (rola `admin`)
+## Features
+- User registration and basic account management
+- Product browsing with search, filtering, and categories
+- Shopping cart with product quantity editing
+- Favorite products list
+- Order flow (delivery, address, payment, summary)
+- Order history in the user account
+- Admin panel with order preview and search (role `admin`)
 
-## Uwagi
-- Aplikacja nie wymaga osobnego backendu — działa na danych lokalnych.
-- Aby uzyskać rolę administratora, podczas rejestracji ustaw nazwę użytkownika na `admin`.
-- Wyczyść LocalStorage, jeśli chcesz zresetować stan aplikacji (konto, koszyk, zamówienia).
+## Notes
+- The application does not require a separate backend — it runs on local data.
+- To get admin role, set the username to `admin` during registration.
+- Clear LocalStorage if you want to reset application state (account, cart, orders).
