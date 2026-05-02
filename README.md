@@ -1,5 +1,12 @@
-# E-Commerce
 
+# E-Commerce
+<p align="center">
+  <img height="1080" width="18%" alt="Zrzut ekranu 2026-02-23 181749" src="https://github.com/user-attachments/assets/43fbb713-e3ed-4e0a-8729-20a8e9a4f4c6" />
+  <img height="996" width="18%" alt="Zrzut ekranu 2026-02-23 181809" src="https://github.com/user-attachments/assets/838a1946-ffae-4e63-bf54-fd8311323f77" />
+  <img height="1080" width="18%" alt="Zrzut ekranu 2026-02-23 181908" src="https://github.com/user-attachments/assets/606b78b8-3c14-4496-9ebe-d8fa3b482f31" />
+  <img height="998" width="18%" alt="Zrzut ekranu 2026-02-23 181916" src="https://github.com/user-attachments/assets/0a7bb60f-6fcb-454c-a2e3-76104b46c7bb" />
+  <img height="1001" width="18%" alt="Zrzut ekranu 2026-02-23 181956" src="https://github.com/user-attachments/assets/16d0b61d-ee70-4f65-ae84-33c7dfb1a7c3" />
+</p>
 An e-commerce application built with Next.js, allowing users to browse products, filter them, manage cart and favorites, place orders, and view order history.
 
 ## Technologies
