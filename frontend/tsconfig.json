@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "src/",
     "target": "ES2017",
     "lib": [
       "dom",
@@ -25,19 +24,19 @@
     ],
     "paths": {
       "@/components/*": [
-        "components/*"
+        "./src/components/*"
       ],
       "@/types/*": [
-        "types/*"
+        "./src/types/*"
       ],
       "@/hooks/*": [
-        "hooks/*"
+        "./src/hooks/*"
       ],
       "@/styles/*": [
-        "styles/*"
+        "./src/styles/*"
       ],
       "@/context/*": [
-        "context/*"
+        "./src/context/*"
       ],
     },
   },

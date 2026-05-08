@@ -7,18 +7,16 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    queueMicrotask(() => {
-      try {
-        const item = localStorage.getItem(key);
-        if (item) {
-          setStoredValue(JSON.parse(item));
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setReady(true);
+    try {
+      const item = localStorage.getItem(key);
+      if (item) {
+        setStoredValue(JSON.parse(item));
       }
-    });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setReady(true);
+    }
   }, [key]);
 
   const setItem = useCallback((value: T) => {

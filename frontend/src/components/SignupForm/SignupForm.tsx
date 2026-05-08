@@ -1,6 +1,7 @@
 'use client';
 
 import "@/components/SignupForm/signup-form.scss";
+import { use, useState } from 'react';
 import { User } from '@/types/user';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
@@ -9,8 +10,16 @@ import * as Yup from 'yup';
 import Button from '../ui/Button/Button';
 
 export default function SignupForm() {
+  const [authOption, setAuthOption] = useState<"login" | "signup">("login");
+
+  const toggleAuthOption = () => {
+    setAuthOption((prev) => (prev === "signup" ? "login" : "signup"));
+  };
+
   const router = useRouter();
   const queryClient = useQueryClient();
+
+
 
   const fetchSignup = async (username: string, email: string, password: string) => {
     const response = await fetch("http://localhost:3001/api/auth/register", {
@@ -38,7 +47,7 @@ export default function SignupForm() {
     }
   });
 
-  const formik = useFormik({
+  const signupFormik = useFormik({
     initialValues: { username: "", email: "", password: "", role: "user" },
     validationSchema: SignupSchema,
     onSubmit: ({ username, email, password, role }: User) => {
@@ -46,57 +55,121 @@ export default function SignupForm() {
     }
   });
 
+  const loginFormik = useFormik({
+    initialValues: { email: "", password: "" },
+    validationSchema: LoginSchema,
+    onSubmit: async ({ email, password }) => {
+      const response = await fetch("http://localhost:3001/api/auth/login", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      if (!response.ok) {
+        throw new Error("Błąd podczas logowania");
+      }
+    }
+  }
+  );
+
   return (
-    <div className="form-container">
-      <form onSubmit={formik.handleSubmit}>
-        <div className='input-box'>
-          <label htmlFor="username" className="label">
-            Imię i nazwisko:
-          </label>
-          <input
-            id="username"
-            className="input"
-            {...formik.getFieldProps("username")}
-          />
-          {formik.touched.username && formik.errors.username && (
-            <div className="error">{formik.errors.username}</div>
-          )}
-        </div>
+    <>
+      {
+        authOption === "signup" ? (
+          <div className="form-container" >
+            <form onSubmit={signupFormik.handleSubmit}>
+              <div className='input-box'>
+                <label htmlFor="username" className="label">
+                  Imię i nazwisko:
+                </label>
+                <input
+                  id="username"
+                  className="input"
+                  {...signupFormik.getFieldProps("username")}
+                />
+                {signupFormik.touched.username && signupFormik.errors.username && (
+                  <div className="error">{signupFormik.errors.username}</div>
+                )}
+              </div>
 
 
-        <div className='input-box'>
-          <label htmlFor="email" className="label">
-            Email:
-          </label>
-          <input
-            id="email"
-            className="input"
-            {...formik.getFieldProps("email")}
-          />
-          {formik.touched.email && formik.errors.email && (
-            <div className="error">{formik.errors.email}</div>
-          )}
+              <div className='input-box'>
+                <label htmlFor="email" className="label">
+                  Email:
+                </label>
+                <input
+                  id="email"
+                  className="input"
+                  {...signupFormik.getFieldProps("email")}
+                />
+                {signupFormik.touched.email && signupFormik.errors.email && (
+                  <div className="error">{signupFormik.errors.email}</div>
+                )}
 
-        </div>
+              </div>
 
-        <div className="input-box">
-          <label htmlFor="password">Hasło:</label>
-          <input
-            id="password"
-            className="input"
-            type="password"
-            {...formik.getFieldProps("password")}
-          />
-          {formik.touched.password && formik.errors.password && (
-            <div className="error">{formik.errors.password}</div>
-          )}
-        </div>
+              <div className="input-box">
+                <label htmlFor="password">Hasło:</label>
+                <input
+                  id="password"
+                  className="input"
+                  type="password"
+                  {...signupFormik.getFieldProps("password")}
+                />
+                {signupFormik.touched.password && signupFormik.errors.password && (
+                  <div className="error">{signupFormik.errors.password}</div>
+                )}
+              </div>
 
-        <Button type="submit" className="signup-button" disabled={!formik.isValid || !formik.dirty}>
-          Zarejestruj się
+              <Button type="submit" className="signup-button" disabled={!signupFormik.isValid || !signupFormik.dirty}>
+                Zarejestruj się
+              </Button>
+            </form>
+          </div>) : (
+          <div className="form-container" >
+            <form onSubmit={loginFormik.handleSubmit}>
+              <div className='input-box'>
+                <label htmlFor="email" className="label">
+                  Email:
+                </label>
+                <input
+                  id="email"
+                  className="input"
+                  {...loginFormik.getFieldProps("email")}
+                />
+                {loginFormik.touched.email && loginFormik.errors.email && (
+                  <div className="error">{loginFormik.errors.email}</div>
+                )}
+              </div>
+              <div className="input-box">
+                <label htmlFor="password">Hasło:</label>
+                <input
+                  id="password"
+                  className="input"
+                  type="password"
+                  {...loginFormik.getFieldProps("password")}
+                />
+                {loginFormik.touched.password && loginFormik.errors.password && (
+                  <div className="error">{loginFormik.errors.password}</div>
+                )}
+              </div>
+
+              <Button type="submit" className="signup-button" disabled={!loginFormik.isValid || !loginFormik.dirty}>
+                Zaloguj się
+              </Button>
+            </form>
+          </div>
+        )
+      };
+      <div className="toggle-container">
+        <p>{authOption === "signup" ? "Masz już konto?" : "Nie masz konta?"}</p>
+        <Button onClick={toggleAuthOption} className="toggle-button">
+          {authOption === "signup" ? "Zaloguj się" : "Zarejestruj się"}
         </Button>
-      </form>
-    </div>
+      </div>
+    </>
   );
 }
 
@@ -118,4 +191,14 @@ const SignupSchema = Yup.object().shape({
     .min(6, "Hasło musi mieć co najmniej 6 znaków")
     .required("Hasło jest wymagane"),
 
+});
+
+const LoginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Nieprawidłowy format email')
+    .required('Email jest wymagany'),
+
+  password: Yup.string()
+    .min(6, "Hasło musi mieć co najmniej 6 znaków")
+    .required("Hasło jest wymagane"),
 });
