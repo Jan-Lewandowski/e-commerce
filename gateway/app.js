@@ -2,11 +2,11 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 
-import authRoutes from './src/routes/authRoutes.js';
-import orderRoutes from './src/routes/orderRoutes.js';
-import productRoutes from './src/routes/productRoutes.js';
-import userRoutes from './src/routes/userRoutes.js';
-import { errorHandler, notFoundHandler } from './src/middleware/errorMiddleware.js';
+import authRoutes from '../backend/src/routes/authRoutes.js';
+import orderRoutes from '../backend/src/routes/orderRoutes.js';
+import productRoutes from '../backend/src/routes/productRoutes.js';
+import userRoutes from '../backend/src/routes/userRoutes.js';
+import { errorHandler, notFoundHandler } from '../backend/src/middleware/errorMiddleware.js';
 
 dotenv.config();
 

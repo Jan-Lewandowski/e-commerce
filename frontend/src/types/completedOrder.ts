@@ -9,7 +9,6 @@ export type CompletedOrderItem = {
 
 export type CompletedOrder = {
   orderId: string;
-  username: string;
   email: string;
   createdAt: string;
   status: 'pending' | 'processing' | 'completed' | 'shipped' | 'delivered' | 'cancelled';

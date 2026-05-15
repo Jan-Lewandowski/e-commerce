@@ -1,11 +1,10 @@
 import { randomUUID } from 'node:crypto';
 
-import { sessions, users } from '../../data.js';
+import { sessions, users } from '../../../gateway/data.js';
 
-export function createUser({ username, email, password = '', role = 'user' }) {
+export function createUser({ email, password = '', role = 'user' }) {
   const user = {
     id: randomUUID(),
-    username,
     email,
     password,
     role,
@@ -17,10 +16,6 @@ export function createUser({ username, email, password = '', role = 'user' }) {
 
 export function findUserByEmail(email) {
   return users.find((user) => user.email.toLowerCase() === email.toLowerCase()) || null;
-}
-
-export function findUserByUsername(username) {
-  return users.find((user) => user.username.toLowerCase() === username.toLowerCase()) || null;
 }
 
 export function findUserById(userId) {

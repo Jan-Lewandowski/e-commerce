@@ -5,8 +5,6 @@ import { notFound } from "next/navigation";
 import { ProductsCatalog } from '@/types/productsCatalog';
 import Header from "@/components/Header/Header";
 import ProductClient from "@/components/ProductClient/ProductClient";
-import FavoritesDrawer from "@/components/FavoritesDrawer/FavoritesDrawer";
-import CartDrawer from "@/components/CartDrawer/CartDrawer";
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -24,8 +22,6 @@ export default async function ProductPage({ params }: { params: { id: string } }
 
   return (
     <>
-      <FavoritesDrawer />
-      <CartDrawer />
       <Header />
       <ProductClient product={product} correlatedProducts={correlatedProducts} />
     </>

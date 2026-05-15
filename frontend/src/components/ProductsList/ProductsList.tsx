@@ -5,7 +5,6 @@ import RecommendedProducts from "../RecommendedProducts/RecommendedProducts";
 import { Product } from "@/types/product"
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import "@/components/ProductsList/products-list.scss";
 
 export default function ProductsList({ productsList }: { productsList: Product[] }) {
   const searchParams = useSearchParams()
@@ -54,15 +53,15 @@ export default function ProductsList({ productsList }: { productsList: Product[]
   ).sort((a, b) => b.stock - a.stock).slice(0, 10);
 
   return (
-    <div className="input-and-list-section">
+    <div className="w-full">
       <input
         type="text"
-        className="filtered-products-search"
+        className="mb-5 h-11 w-full max-w-xl rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100"
         placeholder="Wyszukaj produkt"
         value={localQuery}
         onChange={(e) => setLocalQuery(e.target.value)}
       />
-      <div className="products-list">
+      <div className="grid w-full grid-cols-1 gap-4 xl:gap-5">
         {isCategorized ? locallyFiltered.map((product, index) => (
           <div key={index}><ProductNode product={product} /></div>
         )) : <RecommendedProducts products={recommendedProducts} />}

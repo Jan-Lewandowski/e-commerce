@@ -1,11 +1,10 @@
-import "@/styles/signup.scss";
 import SignupForm from "@/components/SignupForm/SignupForm";
 
 export default function Page() {
 
   return (
-    <div className="signup-page">
+    <main className="grid min-h-screen place-items-center px-4 py-10">
       <SignupForm />
-    </div>
+    </main>
   );
 }

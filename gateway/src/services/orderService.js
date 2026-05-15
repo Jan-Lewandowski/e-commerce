@@ -15,7 +15,7 @@ const emptyDestination = {
 
 function normalizeItems(items) {
   if (!Array.isArray(items) || items.length === 0) {
-    throw new HttpError(400, 'Order must contain at least one item');
+    throw new HttpError(400, 'Zamówienie musi zawierać przynajmniej jeden produkt.');
   }
 
   return items.map((item) => ({
@@ -29,17 +29,17 @@ export function createOrder(payload, user) {
 
   const completedItems = normalizedItems.map(({ productId, quantity }) => {
     if (!productId || !Number.isInteger(quantity) || quantity <= 0) {
-      throw new HttpError(400, 'Every item needs a valid productId and quantity');
+      throw new HttpError(400, 'Każdy produkt wymaga prawidłowego id i ilości.');
     }
 
     const product = productRepository.getProductById(productId);
 
     if (!product) {
-      throw new HttpError(404, `Product ${productId} not found`);
+      throw new HttpError(404, `Nie znaleziono produktu ${productId}`);
     }
 
     if (quantity > product.stock) {
-      throw new HttpError(409, `Not enough stock for ${product.name}`);
+      throw new HttpError(409, `Wybrana ilość produktu jest obecnie niedostępna.`);
     }
 
     return {
@@ -55,12 +55,10 @@ export function createOrder(payload, user) {
 
   const destination = payload.destination || payload.orderDetails?.destination || emptyDestination;
   const email = user?.email || payload.email || destination.email || '';
-  const username = user?.username || payload.username || destination.name || 'Klient';
   const totalAmount = completedItems.reduce((total, item) => total + item.lineTotal, 0);
 
   const order = {
     orderId: randomUUID(),
-    username,
     email,
     createdAt: new Date().toISOString(),
     status: 'completed',
@@ -84,7 +82,7 @@ export function createOrder(payload, user) {
 
 export function getOrdersForUser(user) {
   if (!user?.email) {
-    throw new HttpError(401, 'Unauthorized');
+    throw new HttpError(401, 'Brak autoryzacji');
   }
 
   return orderRepository.getOrdersByEmail(user.email);
@@ -94,11 +92,11 @@ export function getOrderById(orderId, user) {
   const order = orderRepository.getOrderById(orderId);
 
   if (!order) {
-    throw new HttpError(404, 'Order not found');
+    throw new HttpError(404, 'Nie znaleziono zamówienia.');
   }
 
   if (user?.role !== 'admin' && order.email !== user?.email) {
-    throw new HttpError(403, 'Forbidden');
+    throw new HttpError(403, 'Dostęp zabroniony.');
   }
 
   return order;

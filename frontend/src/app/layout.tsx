@@ -1,7 +1,5 @@
-import "@/styles/body.scss";
-import "@/styles/components.scss";
+import "@/styles/globals.css";
 
-import { AppProvider } from "../context/AppContext";
 import Footer from "@/components/Footer/Footer";
 import Providers from "./providers";
 
@@ -13,7 +11,7 @@ export default function RootLayout({
   return (
     <html lang="pl">
       <body>
-        <div className="app-layout">
+        <div className="flex min-h-screen flex-col">
           <Providers>
             {children}
           </Providers>

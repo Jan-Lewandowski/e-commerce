@@ -1,199 +1,94 @@
 'use client';
 
-import "@/components/SignupForm/signup-form.scss";
-import { use, useState } from 'react';
-import { User } from '@/types/user';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import * as Yup from 'yup';
 import Button from '../ui/Button/Button';
 
+const inputClass = "h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100";
+
 export default function SignupForm() {
-  const [authOption, setAuthOption] = useState<"login" | "signup">("login");
-
-  const toggleAuthOption = () => {
-    setAuthOption((prev) => (prev === "signup" ? "login" : "signup"));
-  };
-
+  const [mode, setMode] = useState<'login' | 'register'>('login');
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const queryClient = useQueryClient();
 
+  const formik = useFormik({
+    initialValues: { email: '', password: '' },
+    validationSchema: SignupSchema,
+    onSubmit: async ({ email, password }) => {
+      setError(null);
+      try {
+        const url = mode === 'register' ? 'http://localhost:3001/api/auth/register' : 'http://localhost:3001/api/auth/login';
+        const res = await fetch(url, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
 
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body.message || 'Wystąpił błąd');
+        }
 
-  const fetchSignup = async (username: string, email: string, password: string) => {
-    const response = await fetch("http://localhost:3001/api/auth/register", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, email, password }),
-    });
-    if (!response.ok) {
-      throw new Error("Błąd podczas rejestracji");
-    }
-    return response.json();
+        await queryClient.invalidateQueries({ queryKey: ['me'] });
+        router.replace('/');
+      } catch (err: unknown) {
+        console.error('Auth error', err);
+        if (err instanceof Error) setError(err.message);
+        else setError(String(err) || 'Wystąpił błąd');
+      }
+    },
+  });
+
+  const toggleMode = () => {
+    setMode((m) => (m === 'login' ? 'register' : 'login'));
+    setError(null);
+    formik.resetForm()
   };
 
-  const { mutate: handleSignup } = useMutation({
-    mutationFn: ({ username, email, password }: { username: string, email: string, password: string }) => fetchSignup(username, email, password),
-    onError: (error: Error) => {
-      console.error("Błąd podczas rejestracji:", error);
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["me"] });
-      router.replace("/");
-    }
-  });
-
-  const signupFormik = useFormik({
-    initialValues: { username: "", email: "", password: "", role: "user" },
-    validationSchema: SignupSchema,
-    onSubmit: ({ username, email, password, role }: User) => {
-      handleSignup({ username, email, password });
-    }
-  });
-
-  const loginFormik = useFormik({
-    initialValues: { email: "", password: "" },
-    validationSchema: LoginSchema,
-    onSubmit: async ({ email, password }) => {
-      const response = await fetch("http://localhost:3001/api/auth/login", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      if (!response.ok) {
-        throw new Error("Błąd podczas logowania");
-      }
-    }
-  }
-  );
-
   return (
-    <>
-      {
-        authOption === "signup" ? (
-          <div className="form-container" >
-            <form onSubmit={signupFormik.handleSubmit}>
-              <div className='input-box'>
-                <label htmlFor="username" className="label">
-                  Imię i nazwisko:
-                </label>
-                <input
-                  id="username"
-                  className="input"
-                  {...signupFormik.getFieldProps("username")}
-                />
-                {signupFormik.touched.username && signupFormik.errors.username && (
-                  <div className="error">{signupFormik.errors.username}</div>
-                )}
-              </div>
+    <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-xl sm:p-8">
+      <div className="mb-6">
+        <p className="text-xs font-bold uppercase tracking-[0.16em] text-orange-600">TechStore</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-950">{mode === 'register' ? 'Utwórz konto' : 'Witaj ponownie'}</h1>
+        <p className="mt-2 text-sm text-slate-500">{mode === 'register' ? 'Zarejestruj się, aby przejść do sklepu.' : 'Zaloguj się, aby kontynuować zakupy.'}</p>
+      </div>
 
+      <form onSubmit={formik.handleSubmit} className="grid gap-4">
+        <label htmlFor="email" className="grid gap-1.5">
+          <span className="text-sm font-semibold text-slate-700">Email</span>
+          <input id="email" className={inputClass} {...formik.getFieldProps('email')} />
+          {formik.touched.email && formik.errors.email && <span className="text-sm font-semibold text-red-600">{formik.errors.email}</span>}
+        </label>
 
-              <div className='input-box'>
-                <label htmlFor="email" className="label">
-                  Email:
-                </label>
-                <input
-                  id="email"
-                  className="input"
-                  {...signupFormik.getFieldProps("email")}
-                />
-                {signupFormik.touched.email && signupFormik.errors.email && (
-                  <div className="error">{signupFormik.errors.email}</div>
-                )}
+        <label htmlFor="password" className="grid gap-1.5">
+          <span className="text-sm font-semibold text-slate-700">Hasło</span>
+          <input id="password" className={inputClass} type="password" {...formik.getFieldProps('password')} />
+          {formik.touched.password && formik.errors.password && <span className="text-sm font-semibold text-red-600">{formik.errors.password}</span>}
+        </label>
 
-              </div>
+        {error && <div className="rounded-xl bg-red-50 px-3 py-2 text-sm font-semibold text-red-600">{error}</div>}
 
-              <div className="input-box">
-                <label htmlFor="password">Hasło:</label>
-                <input
-                  id="password"
-                  className="input"
-                  type="password"
-                  {...signupFormik.getFieldProps("password")}
-                />
-                {signupFormik.touched.password && signupFormik.errors.password && (
-                  <div className="error">{signupFormik.errors.password}</div>
-                )}
-              </div>
+        <Button type="submit" className="mt-2 w-full" disabled={!formik.isValid || !formik.dirty}>
+          {mode === 'register' ? 'Zarejestruj się' : 'Zaloguj się'}
+        </Button>
+      </form>
 
-              <Button type="submit" className="signup-button" disabled={!signupFormik.isValid || !signupFormik.dirty}>
-                Zarejestruj się
-              </Button>
-            </form>
-          </div>) : (
-          <div className="form-container" >
-            <form onSubmit={loginFormik.handleSubmit}>
-              <div className='input-box'>
-                <label htmlFor="email" className="label">
-                  Email:
-                </label>
-                <input
-                  id="email"
-                  className="input"
-                  {...loginFormik.getFieldProps("email")}
-                />
-                {loginFormik.touched.email && loginFormik.errors.email && (
-                  <div className="error">{loginFormik.errors.email}</div>
-                )}
-              </div>
-              <div className="input-box">
-                <label htmlFor="password">Hasło:</label>
-                <input
-                  id="password"
-                  className="input"
-                  type="password"
-                  {...loginFormik.getFieldProps("password")}
-                />
-                {loginFormik.touched.password && loginFormik.errors.password && (
-                  <div className="error">{loginFormik.errors.password}</div>
-                )}
-              </div>
-
-              <Button type="submit" className="signup-button" disabled={!loginFormik.isValid || !loginFormik.dirty}>
-                Zaloguj się
-              </Button>
-            </form>
-          </div>
-        )
-      };
-      <div className="toggle-container">
-        <p>{authOption === "signup" ? "Masz już konto?" : "Nie masz konta?"}</p>
-        <Button onClick={toggleAuthOption} className="toggle-button">
-          {authOption === "signup" ? "Zaloguj się" : "Zarejestruj się"}
+      <div className="mt-6 border-t border-slate-100 pt-5 text-center">
+        <p className="text-sm text-slate-500">{mode === 'register' ? 'Masz już konto?' : 'Nie masz konta?'}</p>
+        <Button onClick={toggleMode} variant="ghost" className="mt-2 text-orange-700 hover:bg-orange-50">
+          {mode === 'register' ? 'Zaloguj się' : 'Zarejestruj się'}
         </Button>
       </div>
-    </>
+    </div>
   );
 }
 
 const SignupSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(2, "Imię i nazwisko musi mieć co najmniej 2 znaki")
-    .max(50, "Imię i nazwisko może mieć maksymalnie 50 znaków")
-    .matches(
-      /^[a-zA-Z ]+$/,
-      'Imię i nazwisko może zawierać tylko litery'
-    )
-    .required("Podaj imię i nazwisko"),
-
-  email: Yup.string()
-    .email('Nieprawidłowy format email')
-    .required('Email jest wymagany'),
-
-  password: Yup.string()
-    .min(6, "Hasło musi mieć co najmniej 6 znaków")
-    .required("Hasło jest wymagane"),
-
-});
-
-const LoginSchema = Yup.object().shape({
   email: Yup.string()
     .email('Nieprawidłowy format email')
     .required('Email jest wymagany'),

@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "gateway",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -17,6 +17,7 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "tanstack": "^2.0.3"
+    "tanstack": "^2.0.3",
+    "bcryptjs": "^2.4.3"
   }
 }

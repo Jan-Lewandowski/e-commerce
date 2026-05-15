@@ -3,16 +3,17 @@
 import { useEffect } from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import "@/components/FiltersAsideForm/filters-aside-form.scss"
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce'
-import { useApp } from '@/context/AppContext';
+
+const inputClass = "mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100";
+const labelClass = "block text-xs font-bold uppercase tracking-[0.08em] text-slate-600";
+const errorClass = "mt-2 rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600";
 
 export default function FiltersAsideForm() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  const { isFiltersVisible } = useApp();
 
   const formik = useFormik({
     initialValues: { priceFrom: '', priceTo: '', producer: '', ratingFrom: '', ratingTo: '' },
@@ -48,106 +49,115 @@ export default function FiltersAsideForm() {
   }, [debouncedFilters, formik.values, formik.isValid]);
 
   return (
-    <>
-      {isFiltersVisible && (
-        <div className="filters-aside">
-          <form onSubmit={formik.handleSubmit}>
-            <label htmlFor="priceFrom" className="label">
-              Cena
-            </label>
-            <div className='inputs'>
-              <input
-                id="priceFrom"
-                type="number"
-                placeholder='od'
-                className="input"
-                {...formik.getFieldProps("priceFrom")}
-              />
-              <input
-                id="priceTo"
-                type="number"
-                placeholder='do'
-                className="input"
-                {...formik.getFieldProps("priceTo")}
-              />
-
-            </div>
-            {formik.touched.priceFrom && formik.errors.priceFrom && (
-              <div className="error">{formik.errors.priceFrom}</div>
-            )}
-            {formik.touched.priceTo && formik.errors.priceTo && (
-              <div className="error">{formik.errors.priceTo}</div>
-            )}
-            <label htmlFor="producer" className="label">
-              Producent:
-            </label>
+    <aside className="w-full rounded-2xl border border-slate-200 bg-white p-4 shadow-2xl lg:sticky lg:top-28 lg:ml-auto lg:w-72 lg:shrink-0">
+      <form onSubmit={formik.handleSubmit} className="grid gap-4" noValidate>
+        <div>
+          <label htmlFor="priceFrom" className={labelClass}>Cena</label>
+          <div className='grid grid-cols-2 gap-3'>
             <input
-              id="producer"
-              className="input"
-
-              {...formik.getFieldProps("producer")}
+              {...formik.getFieldProps("priceFrom")}
+              id="priceFrom"
+              type="number"
+              placeholder="od"
+              min={0}
+              max={10000}
+              step={1}
+              inputMode="numeric"
+              className={inputClass}
             />
-            {
-              formik.touched.producer && formik.errors.producer && (
-                <div className="error">{formik.errors.producer}</div>
-              )
-            }
+            <input
+              {...formik.getFieldProps("priceTo")}
+              id="priceTo"
+              type="number"
+              placeholder="do"
+              min={0}
+              max={10000}
+              step={1}
+              inputMode="numeric"
+              className={inputClass}
+            />
+          </div>
+          {formik.touched.priceFrom && formik.errors.priceFrom && <div className={errorClass}>{formik.errors.priceFrom}</div>}
+          {formik.touched.priceTo && formik.errors.priceTo && <div className={errorClass}>{formik.errors.priceTo}</div>}
+        </div>
 
+        <div>
+          <label htmlFor="producer" className={labelClass}>Producent</label>
+          <input
+            {...formik.getFieldProps("producer")}
+            id="producer"
+            type="text"
+            maxLength={50}
+            inputMode="text"
+            autoComplete="off"
+            className={inputClass}
+          />
+          {formik.touched.producer && formik.errors.producer && <div className={errorClass}>{formik.errors.producer}</div>}
+        </div>
 
-            <label htmlFor="ratingFrom" className="label">
-              Ocena:
-            </label>
-            <div className='inputs'>
-              <input
-                id="ratingFrom"
-                type="number"
-                placeholder='od'
-                className="input"
-                {...formik.getFieldProps("ratingFrom")}
-              />
-
-
-
-              <input
-                id="ratingTo"
-                type="number"
-                placeholder='do'
-                className="input"
-                {...formik.getFieldProps("ratingTo")}
-              />
-            </div>
-            {formik.touched.ratingFrom && formik.errors.ratingFrom && (
-              <div className="error">{formik.errors.ratingFrom}</div>
-            )}
-            {
-              formik.touched.ratingTo && formik.errors.ratingTo && (
-                <div className="error">{formik.errors.ratingTo}</div>
-              )
-            }
-          </form >
-        </div >)}
-    </>
+        <div>
+          <label htmlFor="ratingFrom" className={labelClass}>Ocena</label>
+          <div className='grid grid-cols-2 gap-3'>
+            <input
+              {...formik.getFieldProps("ratingFrom")}
+              id="ratingFrom"
+              type="number"
+              placeholder="od"
+              min={0}
+              max={5}
+              step={0.1}
+              inputMode="decimal"
+              className={inputClass}
+            />
+            <input
+              {...formik.getFieldProps("ratingTo")}
+              id="ratingTo"
+              type="number"
+              placeholder="do"
+              min={0}
+              max={5}
+              step={0.1}
+              inputMode="decimal"
+              className={inputClass}
+            />
+          </div>
+          {formik.touched.ratingFrom && formik.errors.ratingFrom && <div className={errorClass}>{formik.errors.ratingFrom}</div>}
+          {formik.touched.ratingTo && formik.errors.ratingTo && <div className={errorClass}>{formik.errors.ratingTo}</div>}
+        </div>
+      </form>
+    </aside>
   );
 }
 
-const FiltersSchema = Yup.object({
-  priceFrom: Yup.number()
-    .min(0, 'Cena nie może być mniejsza niż 0'),
+/** Zamienia <code>&apos;&apos;</code>/null/undefined na brak wartości — liczba z pola number lub string. */
+function coerceOptionalNumber(originalValue: unknown): number | undefined {
+  if (originalValue === '' || originalValue === null || typeof originalValue === 'undefined')
+    return undefined;
+  const n = typeof originalValue === 'number' ? originalValue : Number(originalValue);
+  return Number.isFinite(n) ? n : undefined;
+}
 
-  priceTo: Yup.number()
-    .min(0, 'Cena nie może być mniejsza niż 0')
-    .max(10000, 'Cena nie może być większa niż 10000'),
+const optionalPrice = Yup.number()
+  .optional()
+  .transform((_v, raw) => coerceOptionalNumber(raw))
+  .min(0, 'Cena nie może być ujemna.')
+  .max(10000, 'Cena nie może przekraczać 10000.');
+
+const optionalRating = Yup.number()
+  .optional()
+  .transform((_v, raw) => coerceOptionalNumber(raw))
+  .min(0, 'Ocena nie może być mniejsza niż 0.')
+  .max(5, 'Ocena nie może przekraczać 5.');
+
+const FiltersSchema = Yup.object({
+  priceFrom: optionalPrice,
+  priceTo: optionalPrice,
 
   producer: Yup.string()
-    .min(2, 'Nazwa producenta musi mieć co najmniej 2 znaki')
-    .max(50, 'Nazwa producenta nie może przekraczać 50 znaków'),
+    .transform((val) => (typeof val === 'string' ? val.trim() : ''))
+    .max(50, 'Najwyżej 50 znaków.')
+    .matches(/^$|^.{2,50}$/, 'Albo pozostaw puste, albo wpisz co najmniej 2 znaki.'),
 
-  ratingFrom: Yup.number()
-    .min(0, 'Ocena nie może być mniejsza niż 0')
-    .max(5, 'Ocena nie może być większa niż 5'),
-
-  ratingTo: Yup.number()
-    .min(0, 'Ocena nie może być mniejsza niż 0')
-    .max(5, 'Ocena nie może być większa niż 5'),
-
+  ratingFrom: optionalRating,
+  ratingTo: optionalRating,
 });

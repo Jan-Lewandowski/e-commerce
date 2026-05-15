@@ -5,8 +5,7 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { CompletedOrder } from "@/types/completedOrder";
 import { OrderDetails } from "@/types/orderDetails";
 import { Product } from "@/types/product";
-import { User } from "@/types/user";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
 type AppContextType = {
@@ -23,6 +22,8 @@ type AppContextType = {
   clearFavorites: () => void;
   isFavoritesOpen: boolean;
   toggleFavorites: () => void;
+  isAccountMenuOpen: boolean;
+  toggleAccountMenu: () => void;
   isFavorite: (productId: string) => boolean;
   title: string;
   toggleTitle: (newTitle: string) => void;
@@ -31,8 +32,6 @@ type AppContextType = {
   clearOrderDetails: () => void;
   addToOrderHistory: (order: CompletedOrder[]) => void;
   getOrderHistory: () => CompletedOrder[];
-  isFiltersVisible: boolean;
-  toggleIsFiltersVisible: () => void;
   showCartNoti: (message: string) => void;
 };
 
@@ -40,7 +39,6 @@ const AppContext = createContext<AppContextType | null>(null);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const router = useRouter();
 
   const {
     storedValue: cart,
@@ -49,15 +47,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     getItem: getProducts,
   } = useLocalStorage<{ product: Product; quantity: number }[]>("cart", []);
 
-  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
 
-  const toggleCart = () => {
-    setIsCartOpen((prev) => {
-      const newState = !prev;
-      if (newState && isFavoritesOpen) setIsFavoritesOpen(false);
-      return newState;
-    });
-  };
 
   const addToCart = (product: Product, quantity: number) => {
     const current = getProducts();
@@ -110,17 +100,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   } = useLocalStorage<Product[]>("favorites", []);
 
 
-  const [isFavoritesOpen, setIsFavoritesOpen] = useState<boolean>(false);
-
-
-  const toggleFavorites = () => {
-    setIsFavoritesOpen((prev) => {
-      const newState = !prev;
-      if (newState && isCartOpen) setIsCartOpen(false);
-      return newState;
-    });
-  };
-
   const addOrRemoveFavorites = (product: Product) => {
     const current = getFavorite();
 
@@ -141,6 +120,66 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const current = getFavorite();
     return current.some((item) => item.id === productId);
   }
+
+  const [cartState, setCartState] = useState<{ isOpen: boolean; path: string }>({
+    isOpen: false,
+    path: pathname,
+  });
+  const [accountMenuState, setAccountMenuState] = useState<{ isOpen: boolean; path: string }>({
+    isOpen: false,
+    path: pathname,
+  });
+  const [favoritesState, setFavoritesState] = useState<{ isOpen: boolean; path: string }>({
+    isOpen: false,
+    path: pathname,
+  });
+
+  const isCartRoute = pathname.startsWith("/cart");
+  const isAccountRoute = pathname.startsWith("/account");
+
+  const isCartOpen = cartState.isOpen && cartState.path === pathname && !isCartRoute;
+  const isFavoritesOpen = favoritesState.isOpen && favoritesState.path === pathname;
+  const isAccountMenuOpen = accountMenuState.isOpen && accountMenuState.path === pathname && !isAccountRoute;
+
+  const toggleCart = () => {
+    if (isCartRoute) return;
+    setCartState((prev) => {
+      const samePath = prev.path === pathname;
+      const newState = samePath ? !prev.isOpen : true;
+      if (newState && isFavoritesOpen) {
+        setFavoritesState((prevFavs) => ({ ...prevFavs, isOpen: false }));
+      }
+      if (newState && isAccountMenuOpen) {
+        setAccountMenuState((prevMenu) => ({ ...prevMenu, isOpen: false }));
+      }
+      return { isOpen: newState, path: pathname };
+    });
+  };
+
+  const toggleFavorites = () => {
+    setFavoritesState((prev) => {
+      const samePath = prev.path === pathname;
+      const newState = samePath ? !prev.isOpen : true;
+      if (newState && isCartOpen) setCartState((prevCart) => ({ ...prevCart, isOpen: false }));
+      if (newState && isAccountMenuOpen) {
+        setAccountMenuState((prevMenu) => ({ ...prevMenu, isOpen: false }));
+      }
+      return { isOpen: newState, path: pathname };
+    });
+  };
+
+  const toggleAccountMenu = () => {
+    if (isAccountRoute) return;
+    setAccountMenuState((prev) => {
+      const samePath = prev.path === pathname;
+      const newState = samePath ? !prev.isOpen : true;
+      if (newState && isCartOpen) setCartState((prevCart) => ({ ...prevCart, isOpen: false }));
+      if (newState && isFavoritesOpen) {
+        setFavoritesState((prevFavs) => ({ ...prevFavs, isOpen: false }));
+      }
+      return { isOpen: newState, path: pathname };
+    });
+  };
 
 
 
@@ -174,6 +213,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }, [cartNoti, pathname]);
 
+
   const emptyOrderDetails: OrderDetails = {
     deliveryMethod: "",
     destination: { name: "", street: "", city: "", zipCode: "", phone: "", email: "" },
@@ -197,12 +237,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setOrderHistory([...current, ...order]);
   }
 
-  const [isFiltersVisible, setIsFiltersVisible] = useState(false);
-
-  const toggleIsFiltersVisible = () => {
-    setIsFiltersVisible((prev) => !prev);
-  }
-
   return (
     <AppContext.Provider
       value={{
@@ -219,6 +253,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         clearFavorites,
         isFavoritesOpen,
         toggleFavorites,
+        isAccountMenuOpen,
+        toggleAccountMenu,
         isFavorite,
         title,
         toggleTitle,
@@ -227,8 +263,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         clearOrderDetails,
         addToOrderHistory,
         getOrderHistory,
-        isFiltersVisible,
-        toggleIsFiltersVisible,
         showCartNoti,
       }}
     >

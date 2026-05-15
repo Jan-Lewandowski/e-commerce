@@ -59,7 +59,7 @@ export function getProductById(productId) {
   const product = productRepository.getProductById(productId);
 
   if (!product) {
-    throw new HttpError(404, 'Product not found');
+    throw new HttpError(404, 'Nie znaleziono produktu.');
   }
 
   return product;

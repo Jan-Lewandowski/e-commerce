@@ -1,9 +1,6 @@
 'use client';
 
 import data from "../data.json";
-import "../styles/home.scss";
-import CartDrawer from "@/components/CartDrawer/CartDrawer";
-import FavoritesDrawer from "@/components/FavoritesDrawer/FavoritesDrawer";
 import FilterPanel from "@/components/FilterPanel/FilterPanel";
 import FiltersAsideForm from "@/components/FiltersAsideForm/FiltersAsideForm";
 import Header from "@/components/Header/Header";
@@ -26,9 +23,8 @@ export default function Home() {
     }
   }, [isUserLoading, isLoggedIn, router]);
 
-
   if (isUserLoading) {
-    return <div>Sprawdzanie logowania...</div>;
+    return <div className="grid min-h-[60vh] place-items-center text-sm font-semibold text-slate-500">Sprawdzanie logowania...</div>;
   }
 
   if (!isLoggedIn) {
@@ -36,25 +32,20 @@ export default function Home() {
   }
 
   return (
-    <>
-      <div>
-        <Header />
-        <CartDrawer />
-        <FavoritesDrawer />
-        <Suspense fallback={<div>Ładowanie filtrów</div>}>
-          <FilterPanel categories={categories} />
+    <div className="min-h-screen">
+      <Header />
+      <Suspense fallback={<div className="px-4 py-3 text-sm text-slate-500">Ładowanie filtrów...</div>}>
+        <FilterPanel categories={categories} />
+      </Suspense>
+      <WallHeader />
+      <main className="mx-auto flex w-full max-w-7xl flex-col items-start gap-6 px-4 pb-12 sm:px-6 lg:flex-row">
+        <Suspense fallback={<div className="text-sm text-slate-500">Ładowanie produktów...</div>}>
+          <ProductsList productsList={products} />
         </Suspense>
-        <WallHeader />
-        <div className="products-section">
-          <Suspense fallback={<div>Ładowanie filtrów</div>}>
-            <FiltersAsideForm />
-          </Suspense>
-          <Suspense fallback={<div>Ładowanie produktów...</div>}>
-            <ProductsList productsList={products} />
-          </Suspense>
-        </div>
-      </div>
-    </>
+        <Suspense fallback={<div className="text-sm text-slate-500">Ładowanie filtrów...</div>}>
+          <FiltersAsideForm />
+        </Suspense>
+      </main>
+    </div>
   )
-
 }

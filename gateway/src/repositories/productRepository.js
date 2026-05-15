@@ -1,4 +1,4 @@
-import { categories, products } from '../../data.js';
+import { categories, products } from '../../../gateway/data.js';
 
 export function getCategories() {
   return categories;

@@ -6,10 +6,8 @@ import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Link from 'next/link';
 import { useState } from 'react';
 import Button from '../ui/Button/Button';
-import "./account-menu.scss";
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -44,14 +42,14 @@ export default function AccountMenu() {
         disableScrollLock
       >
         <MenuItem>
-          <Avatar sx={{ width: 24, height: 24, marginRight: 1.3 }} /> <Link href="/account" className='my-account-button'>Moje konto</Link>
+          <Avatar sx={{ width: 24, height: 24, marginRight: 1.3 }} />
         </MenuItem>
         <Divider />
         <MenuItem>
           <ListItemIcon>
             <Logout fontSize="small" sx={{ width: 24, height: 24 }} />
           </ListItemIcon>
-          <Button onClick={ logout } className="logout-button">Wyloguj się</Button>
+          <Button onClick={logout} className="m-0 cursor-pointer border-0 bg-transparent p-0 text-base text-[#ef4444]">Wyloguj się</Button>
         </MenuItem>
       </Menu>
     </>

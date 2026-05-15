@@ -1,121 +1,78 @@
 'use client'
 
-import CartDrawer from '@/components/CartDrawer/CartDrawer';
-import FavoritesDrawer from '@/components/FavoritesDrawer/FavoritesDrawer';
 import Header from '@/components/Header/Header';
 import Button from '@/components/ui/Button/Button';
-import '@/styles/profile.scss';
 import { useApp } from '@/context/AppContext';
-import { useFormik } from 'formik';
+import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import * as Yup from 'yup';
 
 export default function ProfilePage() {
-  const { updateUser, user, getOrderHistory } = useApp();
-  const { showCartNoti } = useApp();
+  const { getOrderHistory } = useApp();
+  const { user: authUser } = useAuth();
   const router = useRouter();
   const orderHistory = getOrderHistory();
 
-  const isAdmin = user?.role === 'admin';
+  const isAdmin = authUser?.role === 'admin';
 
-  const userOrders = orderHistory.filter((order) => order.email === user?.email);
+  const userOrders = orderHistory.filter((order) => order.email === authUser?.email);
 
   const goToDashboard = () => {
     router.push('/dashboard');
   }
 
-  const formik = useFormik({
-    enableReinitialize: true,
-    validationSchema: SignupSchema,
-    initialValues: {
-      username: user?.username ?? '',
-      email: user?.email ?? '',
-    },
-    onSubmit: ({ username, email }) => {
-      if (!user) return;
-      showCartNoti('Dane zostały zaktualizowane');
-      updateUser(username, email);
-    },
-  });
-
-  const usersOrderHistory = userOrders.map((order) => (
-    <div key={order.orderId} className='order-card'>
-      <div className='order-info'>
-        <div><div>Adres dostawy:</div> {order.destination.name}, {order.destination.street}, {order.destination.city}, {order.destination.zipCode}</div>
-        <div><div>Metoda płatności:</div> {order.paymentMethod}</div>
-      </div>
-      <div className='order-items'>
-        <strong>Produkty:</strong>
-        <ul>
-          {order.items.map((item) => (
-            <li key={item.productId}>{item.name} - Ilość: {item.quantity}</li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  ));
-
   return (
     <>
       <Header />
-      <CartDrawer />
-      <FavoritesDrawer />
-      <div className='main-section'>
-        <div className='title'>Dane konta</div>
-        <form className='profile-form' onSubmit={formik.handleSubmit}>
-          <label htmlFor='username'>Imię i nazwisko</label>
-          <input
-            id='username'
-            className='form-input'
-            {...formik.getFieldProps('username')}
-          />
-          {formik.touched.username && formik.errors.username && (
-            <div className='error'>{formik.errors.username}</div>
+      <main className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6">
+        <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-orange-600">Konto</p>
+              <h1 className="mt-1 text-3xl font-black text-slate-950">Dane konta</h1>
+            </div>
+            {isAdmin && (
+              <Button onClick={goToDashboard}>Panel administratora</Button>
+            )}
+          </div>
+
+          <div className="mt-6 rounded-2xl bg-slate-50 p-4">
+            <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">Email</div>
+            <div className="mt-1 break-all font-semibold text-slate-950">{authUser?.email}</div>
+          </div>
+        </section>
+
+        <section className="mt-8">
+          <h2 className="text-2xl font-black text-slate-950">Historia zamówień</h2>
+          {userOrders.length === 0 ? (
+            <div className="mt-4 rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">Brak zamówień</div>
+          ) : (
+            <div className="mt-4 grid gap-4">
+              {userOrders.map((order) => (
+                <article key={order.orderId} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                  <div className="grid gap-3 border-b border-slate-100 pb-4 text-sm text-slate-600 sm:grid-cols-2">
+                    <div>
+                      <div className="font-bold text-slate-950">Adres dostawy</div>
+                      <div>{order.destination.name}, {order.destination.street}, {order.destination.city}, {order.destination.zipCode}</div>
+                    </div>
+                    <div>
+                      <div className="font-bold text-slate-950">Metoda płatności</div>
+                      <div>{order.paymentMethod}</div>
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <div className="font-bold text-slate-950">Produkty</div>
+                    <ul className="mt-2 grid gap-2">
+                      {order.items.map((item) => (
+                        <li key={item.productId} className="rounded-xl bg-slate-50 px-3 py-2 text-sm text-slate-600">{item.name} - Ilość: {item.quantity}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              ))}
+            </div>
           )}
-
-          <label htmlFor='email'>Email</label>
-          <input
-            id='email'
-            className='form-input'
-            type='email'
-            {...formik.getFieldProps('email')}
-          />
-          {formik.touched.email && formik.errors.email && (
-            <div className='error'>{formik.errors.email}</div>
-          )}
-
-          <Button type='submit' className='dashboard-button'>Zapisz</Button>
-        </form>
-
-        {isAdmin && (
-          <Button onClick={goToDashboard} className='dashboard-button'>Panel administratora</Button>
-        )}
-
-      </div>
-      <div className='order-history-section'>
-        <div className='title'>Historia zamówień</div>
-        {usersOrderHistory.length === 0 ? (
-          <div className='no-orders'>Brak zamówień</div>
-        ) : (
-          usersOrderHistory
-        )}
-      </div>
+        </section>
+      </main>
     </>
   );
 }
-
-const SignupSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(2, "Imię i nazwisko musi mieć co najmniej 2 znaki")
-    .max(50, "Imię i nazwisko może mieć maksymalnie 50 znaków")
-    .matches(
-      /^[a-zA-Z ]+$/,
-      'Nazwa użytkownika może zawierać tylko litery'
-    )
-    .required("Podaj imię i nazwisko"),
-
-  email: Yup.string()
-    .email('Nieprawidłowy format email')
-    .required('Email jest wymagany'),
-
-});

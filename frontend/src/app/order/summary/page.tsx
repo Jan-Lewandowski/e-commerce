@@ -1,7 +1,6 @@
 'use client';
 import Button from "@/components/ui/Button/Button";
 import { useApp } from "@/context/AppContext";
-import "@/styles/summary.scss";
 import { OrderDetails } from "@/types/orderDetails";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
@@ -28,51 +27,65 @@ export default function SummaryPage() {
   }
 
   return (
-    <div className="s-summary-page-container">
-      <Link href="/"><Image src="/images/shop-icon.png" alt="back-to-home" width={100} height={100} className="back-to-home-icon" /></Link>
-      <div className="s-page-title">Podsumowanie</div>
-      <div className="s-summary-and-buy-section">
-        <div className="s-summary-info">
-          <div className="s-shipment-details">
-            <h3>Sposób dostawy</h3>
-            <div>{deliveryMethod}</div>
-            <h3>Przesyłkę dostarczy</h3>
-            <div>{shipper}</div>
-          </div>
-          <div className="s-destination-details">
-            <h3>Adres dostawy</h3>
-            <div>{destination?.name}</div>
-            <div>{destination?.street}</div>
-            <div>{destination?.city}, {destination?.zipCode}</div>
-            <div>Tel: {destination?.phone}</div>
-            <div>Email: {destination?.email}</div>
-          </div>
-          <div className="s-payment-details">
-            <h3>Płatność</h3>
-            <div>{paymentMethod}</div>
-          </div>
-          <div className="s-products-details">
-            {cart.map((item, index) => (
-              <div key={index} className="s-product-item">
-                <Image src={item.product.thumbnail} alt={item.product.name} width={50} height={50} />
-                <div className="s-product-title">{item.product.name}</div>
-                <div className="s-product-quantity">x{item.quantity}</div>
-                <div className="s-product-price">{item.product.price} zł</div>
-              </div>
-            ))}
-          </div>
+    <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-orange-600">Podsumowanie</p>
+          <h1 className="text-3xl font-black text-slate-950">Sprawdź zamówienie</h1>
         </div>
-        <div className="s-buy-info">
-          <Link href="/order" className="s-summary-back-link"><ChevronLeft />Powrót do zamówienia</Link>
-          <div className="s-to-pay">
-            <span>Do zapłaty</span>
-            <span className="s-total-price-summary">{totalPrice} zł</span>
-          </div>
-
-          <Button className="s-buy-button" onClick={handleBuy}>Kupuję i płacę</Button>
-        </div>
+        <Link href="/order" className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 transition hover:text-orange-700"><ChevronLeft className="h-5 w-5" />Powrót do zamówienia</Link>
       </div>
 
-    </div>
+      <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
+        <section className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="rounded-2xl bg-slate-50 p-4">
+              <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-slate-500">Dostawa</h2>
+              <p className="mt-2 font-semibold text-slate-950">{deliveryMethod || "-"}</p>
+              <p className="mt-1 text-sm text-slate-500">{shipper || "-"}</p>
+            </div>
+            <div className="rounded-2xl bg-slate-50 p-4">
+              <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-slate-500">Adres</h2>
+              <div className="mt-2 grid gap-1 text-sm text-slate-600">
+                <p className="font-semibold text-slate-950">{destination?.name || "-"}</p>
+                <p>{destination?.street}</p>
+                <p>{destination?.city}, {destination?.zipCode}</p>
+                <p>{destination?.phone}</p>
+                <p>{destination?.email}</p>
+              </div>
+            </div>
+            <div className="rounded-2xl bg-slate-50 p-4">
+              <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-slate-500">Płatność</h2>
+              <p className="mt-2 font-semibold text-slate-950">{paymentMethod || "-"}</p>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="mb-3 text-lg font-bold text-slate-950">Produkty</h2>
+            <div className="grid gap-3">
+              {cart.map((item, index) => (
+                <div key={index} className="grid gap-3 rounded-2xl border border-slate-200 p-3 sm:grid-cols-[64px_1fr_auto] sm:items-center">
+                  <Image src={item.product.thumbnail} alt={item.product.name} width={64} height={64} className="h-16 w-16 rounded-xl object-cover" />
+                  <div>
+                    <div className="font-semibold text-slate-950">{item.product.name}</div>
+                    <div className="text-sm text-slate-500">x{item.quantity}</div>
+                  </div>
+                  <div className="font-black text-orange-600">{item.product.price * item.quantity} zł</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <aside className="h-fit rounded-2xl border border-slate-200 bg-white p-5 shadow-sm lg:sticky lg:top-28">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-semibold text-slate-500">Do zapłaty</span>
+            <span className="text-3xl font-black text-slate-950">{totalPrice} zł</span>
+          </div>
+
+          <Button className="mt-5 w-full" onClick={handleBuy}>Kupuję i płacę</Button>
+        </aside>
+      </div>
+    </main>
   )
 }
