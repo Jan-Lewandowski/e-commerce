@@ -1,5 +1,5 @@
 import * as productRepository from '../repositories/productRepository.js';
-import { HttpError } from '../utils/httpError.js';
+import { HttpError } from '../../../utils/httpError.js';
 
 function toNumber(value) {
   if (value === undefined || value === null || value === '') {

@@ -1,4 +1,4 @@
-import { orders } from '../../../gateway/data.js';
+import { orders } from '../ordersData.js';
 
 export function createOrder(order) {
   orders.unshift(order);

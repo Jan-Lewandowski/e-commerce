@@ -1,2 +1,0 @@
--login/register switch with login using auth/login endpoint
--products fetching using /products endpoint

@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 
-import { sessions, users } from '../../../gateway/data.js';
+import { sessions, users } from '../../data.js';
 
 export function createUser({ email, password = '', role = 'user' }) {
   const user = {

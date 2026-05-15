@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto';
 
 import * as orderRepository from '../repositories/orderRepository.js';
-import * as productRepository from '../repositories/productRepository.js';
-import { HttpError } from '../utils/httpError.js';
+import * as productRepository from '../../catalog/repositories/productRepository.js';
+import { HttpError } from '../../../utils/httpError.js';
 
 const emptyDestination = {
   name: '',
@@ -39,7 +39,7 @@ export function createOrder(payload, user) {
     }
 
     if (quantity > product.stock) {
-      throw new HttpError(409, `Wybrana ilość produktu jest obecnie niedostępna.`);
+      throw new HttpError(409, 'Wybrana ilość produktu jest obecnie niedostępna.');
     }
 
     return {
