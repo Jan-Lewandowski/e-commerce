@@ -1,5 +1,5 @@
 
-
+## The application is under redevelopment to support a full-stack architecture.
 
 # E-Commerce
 <p align="center">
