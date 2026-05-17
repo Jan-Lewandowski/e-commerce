@@ -1,11 +1,13 @@
 
+
+
 # E-Commerce
 <p align="center">
-  <img height="1080" width="18%" alt="Zrzut ekranu 2026-02-23 181749" src="https://github.com/user-attachments/assets/43fbb713-e3ed-4e0a-8729-20a8e9a4f4c6" />
-  <img height="996" width="18%" alt="Zrzut ekranu 2026-02-23 181809" src="https://github.com/user-attachments/assets/838a1946-ffae-4e63-bf54-fd8311323f77" />
-  <img height="1080" width="18%" alt="Zrzut ekranu 2026-02-23 181908" src="https://github.com/user-attachments/assets/606b78b8-3c14-4496-9ebe-d8fa3b482f31" />
-  <img height="998" width="18%" alt="Zrzut ekranu 2026-02-23 181916" src="https://github.com/user-attachments/assets/0a7bb60f-6fcb-454c-a2e3-76104b46c7bb" />
-  <img height="1001" width="18%" alt="Zrzut ekranu 2026-02-23 181956" src="https://github.com/user-attachments/assets/16d0b61d-ee70-4f65-ae84-33c7dfb1a7c3" />
+  <img width="1920" height="1080" alt="frontpage-e-commerce" src="https://github.com/user-attachments/assets/3cc26251-0bba-4821-bc9e-7d797251ca65" />
+  <img width="1920" height="1080" alt="cart-page-e-commerce" src="https://github.com/user-attachments/assets/f81be594-c101-45e3-9fd8-f0f7349b3343" />
+  <img width="1920" height="1080" alt="delivery-details-page-e-commerce" src="https://github.com/user-attachments/assets/8324e7a8-9c50-4d84-a1ab-77af4d83a4ed" />
+  <img width="1920" height="1080" alt="order-summary-page-e-commerce" src="https://github.com/user-attachments/assets/fd1ec8ac-c50d-44dd-a8ad-731cc9f3f043" />
+  <img width="1920" height="1080" alt="admin-panel-page-e-commerce" src="https://github.com/user-attachments/assets/88bd4037-fad9-481c-ac9b-c29c51b72100" />
 </p>
 An e-commerce application built with Next.js, allowing users to browse products, filter them, manage cart and favorites, place orders, and view order history.
 
