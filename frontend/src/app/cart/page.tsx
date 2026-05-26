@@ -1,6 +1,6 @@
 'use client';
 
-import Header from "@/components/Header/Header";
+import Header from "@/components/Header";
 import Button from "@/components/ui/Button/Button";
 import { useApp } from "@/context/AppContext";
 import { ShoppingBasket } from "lucide-react";
@@ -41,8 +41,8 @@ export default function CartPage() {
 
           <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
             <div className="grid gap-3">
-              {cart.map((item, index) => (
-                <Link href={`/product/${item.product.id}`} key={index} className="block">
+              {cart.map((item) => (
+                <Link href={`/product/${item.product.id}`} key={item.product.id} className="block">
                   <article className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-orange-200 hover:shadow-md sm:grid-cols-[96px_1fr_auto] sm:items-center">
                     <Image src={item.product.thumbnail} alt={item.product.name} width={96} height={96} className="h-24 w-24 rounded-xl object-cover" />
                     <div className="min-w-0">
@@ -68,7 +68,7 @@ export default function CartPage() {
                           e.preventDefault();
                           e.stopPropagation()
                         }}>
-                        <Button variant="destructive" className="h-10 min-h-10 w-10 p-0" onClick={() => removeFromCart(index)}><Trash2 className="h-5 w-5" /></Button>
+                        <Button variant="destructive" className="h-10 min-h-10 w-10 p-0" onClick={() => removeFromCart(item.product.id)}><Trash2 className="h-5 w-5" /></Button>
                         <Button variant="outline" className="h-10 min-h-10 w-10 p-0" onClick={() => addOrRemoveFavorites(item.product)}>
                           {isFavorite(item.product.id) ? <Heart className="h-5 w-5 fill-orange-500 text-orange-500" /> : <Heart className="h-5 w-5" />}
                         </Button>

@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 
-import Footer from "@/components/Footer/Footer";
+import Footer from "@/components/Footer";
 import Providers from "./providers";
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
           <Providers>
             {children}
           </Providers>
-          <div id="cart-notification" />
+          <div id="notification" />
           <Footer />
         </div>
       </body>

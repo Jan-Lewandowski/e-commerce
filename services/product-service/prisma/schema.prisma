@@ -1,0 +1,35 @@
+// FK do products(id) z Knex jest LUZNY (string bez @relation) zeby uniknac
+// konfliktu z migracjami innych ORM-ow.
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Promotion {
+  id          Int                @id @default(autoincrement())
+  code        String             @unique
+  description String
+  percentOff  Decimal            @map("percent_off") @db.Decimal(5, 2)
+  startsAt    DateTime           @map("starts_at")
+  endsAt      DateTime           @map("ends_at")
+  createdAt   DateTime           @default(now()) @map("created_at")
+  products    PromotionProduct[]
+
+  @@map("promotions")
+}
+
+model PromotionProduct {
+  id          Int       @id @default(autoincrement())
+  promotionId Int       @map("promotion_id")
+  productId   String    @map("product_id")
+  promotion   Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+
+  @@unique([promotionId, productId])
+  @@map("promotion_products")
+}

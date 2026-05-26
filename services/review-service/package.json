@@ -1,0 +1,19 @@
+{
+  "name": "review-service",
+  "version": "1.0.0",
+  "description": "Product reviews — MongoDB native driver (T5), Mongoose (T6), aggregation (T7)",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "seed": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongodb": "^6.12.0",
+    "mongoose": "^8.9.5"
+  }
+}

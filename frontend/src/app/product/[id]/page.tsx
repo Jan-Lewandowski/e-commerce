@@ -1,29 +1,49 @@
+'use client';
 
+import { notFound, useParams } from "next/navigation";
+import Header from "@/components/Header";
+import ProductClient from "@/components/ProductClient";
+import { useProduct, useRelatedProducts } from "@/lib/queries/catalog";
 
-import data from "../../../data.json";
-import { notFound } from "next/navigation";
-import { ProductsCatalog } from '@/types/productsCatalog';
-import Header from "@/components/Header/Header";
-import ProductClient from "@/components/ProductClient/ProductClient";
+export default function ProductPage() {
+  const params = useParams<{ id: string }>();
+  const id = params?.id ?? "";
 
-export default async function ProductPage({ params }: { params: { id: string } }) {
-  const { id } = await params;
+  const productQuery = useProduct(id);
+  const relatedQuery = useRelatedProducts(id, 5);
 
-  const { products } = data as ProductsCatalog;
-
-  const product = products.find((prod) => prod.id === id);
-
-
-  if (!product) {
-    return notFound();
+  if (productQuery.isError) {
+    if (productQuery.error instanceof Error && productQuery.error.message.includes("HTTP 404")) {
+      return notFound();
+    }
+    return (
+      <>
+        <Header />
+        <main className="mx-auto w-full max-w-7xl px-4 py-10 text-sm text-red-600">
+          Nie udało się załadować produktu.
+        </main>
+      </>
+    );
   }
 
-  const correlatedProducts = products.filter((prod) => product.tags.some(tag => prod.tags.includes(tag) && prod.id !== product.id)).slice(0, 5);
+  if (productQuery.isLoading || !productQuery.data) {
+    return (
+      <>
+        <Header />
+        <main className="mx-auto w-full max-w-7xl px-4 py-10 text-sm text-slate-500">
+          Ładowanie produktu...
+        </main>
+      </>
+    );
+  }
 
   return (
     <>
       <Header />
-      <ProductClient product={product} correlatedProducts={correlatedProducts} />
+      <ProductClient
+        product={productQuery.data}
+        correlatedProducts={relatedQuery.data ?? []}
+      />
     </>
   );
 }

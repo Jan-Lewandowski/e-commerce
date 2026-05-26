@@ -1,3 +1,5 @@
+import type { SupplierSummary } from "@/types/supplier";
+
 export type Product = {
   id: string;
   category: string;
@@ -10,4 +12,5 @@ export type Product = {
   tags: string[];
   specs: Partial<Record<string, string | number | boolean>>;
   description: string;
+  supplier?: SupplierSummary | null;
 };

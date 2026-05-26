@@ -1,0 +1,345 @@
+{
+  "reviewerProfiles": [
+    {
+      "email": "anna.kowalska@example.com",
+      "displayName": "Anna K.",
+      "verifiedPurchaser": true
+    },
+    {
+      "email": "piotr.nowak@example.com",
+      "displayName": "Piotr N.",
+      "verifiedPurchaser": true
+    },
+    {
+      "email": "maria.wisniewska@example.com",
+      "displayName": "Maria W.",
+      "verifiedPurchaser": false
+    },
+    {
+      "email": "tomasz.lewandowski@example.com",
+      "displayName": "Tomasz L.",
+      "verifiedPurchaser": true
+    },
+    {
+      "email": "katarzyna.zielinska@example.com",
+      "displayName": "Kasia Z.",
+      "verifiedPurchaser": false
+    },
+    {
+      "email": "jakub.kaminski@example.com",
+      "displayName": "Jakub K.",
+      "verifiedPurchaser": true
+    },
+    {
+      "email": "ewa.wojcik@example.com",
+      "displayName": "Ewa W.",
+      "verifiedPurchaser": true
+    },
+    {
+      "email": "michal.szymanski@example.com",
+      "displayName": "Michal S.",
+      "verifiedPurchaser": false
+    }
+  ],
+  "reviews": [
+    {
+      "productId": "LAP-001",
+      "profileEmail": "anna.kowalska@example.com",
+      "authorEmail": "anna.kowalska@example.com",
+      "rating": 5,
+      "title": "Swietny laptop do pracy",
+      "body": "Lenovo IdeaPad 5 spisuje sie znakomicie w codziennej pracy biurowej i na studiach. Cichy, szybki i lekki.",
+      "tags": [
+        "quality",
+        "office"
+      ]
+    },
+    {
+      "productId": "LAP-001",
+      "profileEmail": "piotr.nowak@example.com",
+      "authorEmail": "piotr.nowak@example.com",
+      "rating": 4,
+      "title": "Solidny, ale bateria mogloby trwac dluzej",
+      "body": "Ogolnie polecam, wydajnosc wystarczajaca do multitaskingu. Przy intensywnym uzytkowaniu bateria trzyma okolo 5 godzin.",
+      "tags": [
+        "battery",
+        "performance"
+      ]
+    },
+    {
+      "productId": "LAP-002",
+      "profileEmail": "maria.wisniewska@example.com",
+      "authorEmail": "maria.wisniewska@example.com",
+      "rating": 5,
+      "title": "MacBook Air M2 — klasa sama dla siebie",
+      "body": "Niesamowity czas pracy na baterii i cicha praca. Idealny do podrozy i pracy zdalnej.",
+      "tags": [
+        "quality",
+        "battery",
+        "portable"
+      ]
+    },
+    {
+      "productId": "LAP-002",
+      "profileEmail": "tomasz.lewandowski@example.com",
+      "authorEmail": "tomasz.lewandowski@example.com",
+      "rating": 4,
+      "title": "Drogi, ale wart ceny",
+      "body": "Wysoka cena, ale jakosc wykonania i ekran Retina rekompensuja koszt. macOS dziala plynnie.",
+      "tags": [
+        "premium",
+        "display"
+      ]
+    },
+    {
+      "productId": "SMART-001",
+      "profileEmail": "katarzyna.zielinska@example.com",
+      "authorEmail": "katarzyna.zielinska@example.com",
+      "rating": 5,
+      "title": "Aparat robi wrazenie",
+      "body": "Galaxy S23 ma swietny aparat nocny i szybkie ladowanie. Ekran AMOLED jest piekny.",
+      "tags": [
+        "camera",
+        "display"
+      ]
+    },
+    {
+      "productId": "SMART-001",
+      "profileEmail": "jakub.kaminski@example.com",
+      "authorEmail": "jakub.kaminski@example.com",
+      "rating": 4,
+      "title": "Flagowiec bez kompromisow",
+      "body": "Telefon szybki, ale obudowa jest dosc sciagajaca odciski palcow. Poza tym bardzo polecam.",
+      "tags": [
+        "performance"
+      ]
+    },
+    {
+      "productId": "SMART-002",
+      "profileEmail": "ewa.wojcik@example.com",
+      "authorEmail": "ewa.wojcik@example.com",
+      "rating": 5,
+      "title": "Idealny do treningow",
+      "body": "Apple Watch Series 9 swietnie mierzy tętno i aktywnosc. Integracja z iPhone bez zarzutu.",
+      "tags": [
+        "fitness",
+        "health"
+      ]
+    },
+    {
+      "productId": "PC-001",
+      "profileEmail": "michal.szymanski@example.com",
+      "authorEmail": "michal.szymanski@example.com",
+      "rating": 5,
+      "title": "Ryzen 5 7600 — swietny stosunek ceny do mocy",
+      "body": "Procesor idealny do gier i pracy. Niskie temperatury przy dobrym chlodzeniu.",
+      "tags": [
+        "gaming",
+        "value"
+      ]
+    },
+    {
+      "productId": "PC-001",
+      "profileEmail": "anna.kowalska@example.com",
+      "authorEmail": "anna.kowalska@example.com",
+      "rating": 4,
+      "title": "Wydajny, ale wymaga dobrego RAM-u",
+      "body": "Do pelni moze wykorzystac szybka pamiec DDR5. Sam procesor jest bardzo wydajny.",
+      "tags": [
+        "performance"
+      ]
+    },
+    {
+      "productId": "PC-002",
+      "profileEmail": "piotr.nowak@example.com",
+      "authorEmail": "piotr.nowak@example.com",
+      "rating": 4,
+      "title": "Dobra karta do 1440p",
+      "body": "RTX 4060 radzi sobie z wiekszoscia gier w QHD. Cicha przy niskim obciazeniu.",
+      "tags": [
+        "gaming",
+        "gpu"
+      ]
+    },
+    {
+      "productId": "GAME-001",
+      "profileEmail": "tomasz.lewandowski@example.com",
+      "authorEmail": "tomasz.lewandowski@example.com",
+      "rating": 5,
+      "title": "Klawiatura mechaniczna premium",
+      "body": "Keychron K2 Pro ma swietne przełączniki i solidna konstrukcja. Polecam do programowania.",
+      "tags": [
+        "keyboard",
+        "quality"
+      ]
+    },
+    {
+      "productId": "GAME-002",
+      "profileEmail": "katarzyna.zielinska@example.com",
+      "authorEmail": "katarzyna.zielinska@example.com",
+      "rating": 4,
+      "title": "Mysz precyzyjna do FPS",
+      "body": "Logitech G Pro X Superlight jest lekka i ma bardzo dobry sensor. Bateria trzyma dlugo.",
+      "tags": [
+        "mouse",
+        "gaming"
+      ]
+    },
+    {
+      "productId": "PER-001",
+      "profileEmail": "jakub.kaminski@example.com",
+      "authorEmail": "jakub.kaminski@example.com",
+      "rating": 5,
+      "title": "Monitor idealny do pracy",
+      "body": "Dell UltraSharp ma doskonala jakosc obrazu i wygodna regulacje wysokosci.",
+      "tags": [
+        "monitor",
+        "office"
+      ]
+    },
+    {
+      "productId": "PER-002",
+      "profileEmail": "ewa.wojcik@example.com",
+      "authorEmail": "ewa.wojcik@example.com",
+      "rating": 4,
+      "title": "Sluchawki z ANC dzialaja dobrze",
+      "body": "Sony WH-1000XM5 skutecznie tlumia hałas w open space. Komfort noszenia na dlugie godziny.",
+      "tags": [
+        "audio",
+        "comfort"
+      ]
+    },
+    {
+      "productId": "PER-002",
+      "profileEmail": "maria.wisniewska@example.com",
+      "authorEmail": "maria.wisniewska@example.com",
+      "rating": 5,
+      "title": "Najlepsze sluchawki jakie mialem",
+      "body": "Jakosc dzwieku i redukcja szumow na najwyzszym poziomie. Cena wysoka, ale uzasadniona.",
+      "tags": [
+        "audio",
+        "premium"
+      ]
+    },
+    {
+      "productId": "GAME-001",
+      "profileEmail": "michal.szymanski@example.com",
+      "authorEmail": "michal.szymanski@example.com",
+      "rating": 4,
+      "title": "Wygodna do dlugich sesji",
+      "body": "Ergonomiczny profil klawiatury Keychron sprawdza sie przy dlugim pisaniu kodu.",
+      "tags": [
+        "keyboard",
+        "ergonomics"
+      ]
+    },
+    {
+      "productId": "SMART-002",
+      "profileEmail": "piotr.nowak@example.com",
+      "authorEmail": "piotr.nowak@example.com",
+      "rating": 4,
+      "title": "Dobry smartwatch, ale cena premium",
+      "body": "Funkcje zdrowotne dzialaja dobrze. Brakuje mi dluzszej autonomii przy always-on display.",
+      "tags": [
+        "smartwatch",
+        "battery"
+      ]
+    },
+    {
+      "productId": "PC-002",
+      "profileEmail": "anna.kowalska@example.com",
+      "authorEmail": "anna.kowalska@example.com",
+      "rating": 5,
+      "title": "Swietna karta w tej klasie cenowej",
+      "body": "Ray tracing w nowszych grach dziala plynnie przy ustawieniach srednich. Polecam.",
+      "tags": [
+        "gpu",
+        "gaming"
+      ]
+    },
+    {
+      "productId": "PER-001",
+      "profileEmail": "tomasz.lewandowski@example.com",
+      "authorEmail": "tomasz.lewandowski@example.com",
+      "rating": 4,
+      "title": "Monitor bez zarzutu pod wzgledem kolorow",
+      "body": "Kalibracja fabryczna jest dobra. USB-C z zasilaniem to duzy plus przy pracy z laptopem.",
+      "tags": [
+        "monitor",
+        "usbc"
+      ]
+    },
+    {
+      "productId": "LAP-001",
+      "profileEmail": "katarzyna.zielinska@example.com",
+      "authorEmail": "katarzyna.zielinska@example.com",
+      "rating": 3,
+      "title": "OK na co dzien, slaby glosnik",
+      "body": "Laptop sprawny, ale glosniki sa ciche. Do pracy biurowej wystarczy, do muzyki raczej nie.",
+      "tags": [
+        "audio",
+        "value"
+      ]
+    },
+    {
+      "productId": "GAME-002",
+      "profileEmail": "ewa.wojcik@example.com",
+      "authorEmail": "ewa.wojcik@example.com",
+      "rating": 5,
+      "title": "Lekka i precyzyjna",
+      "body": "Mysz Logitech G Pro X Superlight to must-have dla graczy kompetetywnych. Bez przewodu, super.",
+      "tags": [
+        "mouse",
+        "wireless"
+      ]
+    },
+    {
+      "productId": "SMART-001",
+      "profileEmail": "maria.wisniewska@example.com",
+      "authorEmail": "maria.wisniewska@example.com",
+      "rating": 5,
+      "title": "Najlepszy Android w tej cenie",
+      "body": "One UI jest intuicyjne, aktualizacje regularne. Polecam kazdemu kto szuka flagowca.",
+      "tags": [
+        "android",
+        "software"
+      ]
+    },
+    {
+      "productId": "PC-001",
+      "profileEmail": "jakub.kaminski@example.com",
+      "authorEmail": "jakub.kaminski@example.com",
+      "rating": 5,
+      "title": "Upgrade z Ryzen 3600 — ogromna roznica",
+      "body": "Skok wydajnosci w grach i renderingu jest wyrazny. Instalacja bez problemow na plycie AM5.",
+      "tags": [
+        "upgrade",
+        "performance"
+      ]
+    },
+    {
+      "productId": "LAP-002",
+      "profileEmail": "ewa.wojcik@example.com",
+      "authorEmail": "ewa.wojcik@example.com",
+      "rating": 5,
+      "title": "Najlepszy ultrabook na rynku",
+      "body": "Cienki, lekki i wydajny. Trackpad i klawiatura na najwyzszym poziomie.",
+      "tags": [
+        "ultrabook",
+        "quality"
+      ]
+    },
+    {
+      "productId": "PER-001",
+      "profileEmail": "piotr.nowak@example.com",
+      "authorEmail": "piotr.nowak@example.com",
+      "rating": 5,
+      "title": "Monitor do grafiki i kodu",
+      "body": "Rozdzielczosc 4K i pokrycie kolorow sprawdzaja sie w pracy kreatywnej.",
+      "tags": [
+        "4k",
+        "design"
+      ]
+    }
+  ]
+}

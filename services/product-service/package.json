@@ -1,0 +1,31 @@
+{
+  "name": "product-service",
+  "version": "1.0.0",
+  "description": "Catalog, orders, suppliers, promotions - showcase of pg, Knex, Sequelize and Prisma in one Express service.",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "db:migrate": "knex migrate:latest --knexfile knexfile.js",
+    "db:rollback": "knex migrate:rollback --knexfile knexfile.js",
+    "db:seed": "knex seed:run --knexfile knexfile.js",
+    "db:reset": "knex migrate:rollback --all --knexfile knexfile.js && knex migrate:latest --knexfile knexfile.js && knex seed:run --knexfile knexfile.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "knex": "^3.1.0",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.20.0",
+    "sequelize": "^6.37.5"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0"
+  }
+}

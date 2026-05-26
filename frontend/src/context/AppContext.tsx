@@ -1,17 +1,29 @@
 "use client";
 
-import CartNotificationPortal from "@/components/CartNotificationPortal/CartNotificationPortal";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { CompletedOrder } from "@/types/completedOrder";
 import { OrderDetails } from "@/types/orderDetails";
 import { Product } from "@/types/product";
 import { usePathname } from "next/navigation";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import {
+  CartItem,
+  useCart,
+  useClearCart,
+  useRemoveFromCart,
+  useSetCartQuantity,
+} from "@/lib/queries/cart";
+import {
+  useAddFavorite,
+  useClearFavorites,
+  useFavorites,
+  useRemoveFavorite,
+} from "@/lib/queries/favorites";
 
 type AppContextType = {
-  cart: { product: Product; quantity: number }[];
+  cart: CartItem[];
   addToCart: (product: Product, quantity: number) => void;
-  removeFromCart: (index: number) => void;
+  removeFromCart: (productId: string) => void;
   clearCart: () => void;
   isCartOpen: boolean;
   toggleCart: () => void;
@@ -30,97 +42,123 @@ type AppContextType = {
   setOrderDetails: (details: OrderDetails) => void;
   getOrderDetails: () => OrderDetails;
   clearOrderDetails: () => void;
-  addToOrderHistory: (order: CompletedOrder[]) => void;
-  getOrderHistory: () => CompletedOrder[];
-  showCartNoti: (message: string) => void;
+  cartPopUp: CartPopUpData | null;
+  closeCartPopUp: () => void;
 };
+
+const MAX_CART_ITEM_QUANTITY = 3;
+
+type CartPopUpData =
+  | {
+    type: "added";
+    message: string;
+    product: Product;
+    quantity: number;
+    lowStockNotice?: boolean;
+  }
+  | {
+    type: "limit";
+    message: string;
+  };
 
 const AppContext = createContext<AppContextType | null>(null);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { isLoggedIn } = useAuth();
 
-  const {
-    storedValue: cart,
-    setItem: setCart,
-    clearItem: clearCart,
-    getItem: getProducts,
-  } = useLocalStorage<{ product: Product; quantity: number }[]>("cart", []);
+  // === Cart (server-backed via product-service) ===
+  const cartQuery = useCart(isLoggedIn);
+  const setCartQuantityMutation = useSetCartQuantity();
+  const removeFromCartMutation = useRemoveFromCart();
+  const clearCartMutation = useClearCart();
+  const cart = cartQuery.data ?? [];
+  const [cartPopUp, setCartPopUp] = useState<CartPopUpData | null>(null);
 
-
-
-  const addToCart = (product: Product, quantity: number) => {
-    const current = getProducts();
-
-    if (current.find((item) => item.product.id === product.id)) {
-      const newQuantity = current.find((item) => item.product.id === product.id)!.quantity + quantity;
-      const updatedCart = current.map((item) =>
-        item.product.id === product.id ? { ...item, quantity: newQuantity } : item
-      );
-      showCartNoti(`Dodano ${quantity} szt. produktu "${product.name}" do koszyka. Lącznie w koszyku: ${newQuantity} szt.`);
-      setCart(updatedCart);
-    } else {
-      setCart([...current, { product, quantity }]);
-      showCartNoti(`Dodano ${quantity} szt. produktu "${product.name}" do koszyka.`);
-    }
-
+  const showCartLimitPopUp = () => {
+    setCartPopUp({
+      type: "limit",
+      message: `Możesz zamówić maksymalnie ${MAX_CART_ITEM_QUANTITY} sztuki tego produktu.`,
+    });
   };
 
-  const removeFromCart = (index: number) => {
-    const current = getProducts();
-    const updated = current.filter((_, i) => i !== index);
-    setCart(updated);
+  const addToCart = (product: Product, quantity: number) => {
+    if (!isLoggedIn || product.stock <= 0 || quantity <= 0) return;
+    const existing = cart.find((item) => item.product.id === product.id);
+    const nextQuantity = (existing?.quantity ?? 0) + quantity;
+    if (nextQuantity > MAX_CART_ITEM_QUANTITY) {
+      showCartLimitPopUp();
+      return;
+    }
+    if (nextQuantity > product.stock) return;
+    const message = existing
+      ? `Dodano ${quantity} szt. produktu "${product.name}". Lącznie w koszyku: ${nextQuantity} szt.`
+      : `Dodano ${quantity} szt. produktu "${product.name}" do koszyka.`;
+    setCartQuantityMutation.mutate(
+      { productId: product.id, quantity: nextQuantity },
+      {
+        onSuccess: () =>
+          setCartPopUp({
+            type: "added",
+            message,
+            product,
+            quantity,
+            lowStockNotice: product.stock > 0 && product.stock <= 5,
+          }),
+      },
+    );
+  };
+
+  const removeFromCart = (productId: string) => {
+    removeFromCartMutation.mutate(productId);
   };
 
   const setQuantity = (product: Product, quantity: number) => {
-    const current = getProducts();
-
-
-    const updatedCart = current.map((item) => {
-
-      if (item.product.id === product.id && quantity > 0 && item.quantity + 1 >= item.quantity - quantity) {
-        if (quantity < item.quantity) {
-          showCartNoti(`Zmniejszono ilość produktu "${product.name}" do ${quantity} szt. w koszyku.`);
-        }
-        if (quantity > item.quantity) {
-          showCartNoti(`Zwiększono ilość produktu "${product.name}" do ${quantity} szt. w koszyku.`);
-        }
-        return { ...item, quantity };
-      }
-      return item;
-    });
-    setCart(updatedCart);
+    if (quantity <= 0) {
+      removeFromCartMutation.mutate(product.id);
+      return;
+    }
+    if (quantity > MAX_CART_ITEM_QUANTITY) {
+      showCartLimitPopUp();
+      return;
+    }
+    setCartQuantityMutation.mutate({ productId: product.id, quantity });
   };
 
-  const {
-    storedValue: favorites,
-    setItem: setFavorites,
-    clearItem: clearFavorites,
-    getItem: getFavorite,
-  } = useLocalStorage<Product[]>("favorites", []);
+  const clearCart = () => {
+    clearCartMutation.mutate();
+  };
 
+  // === Favorites (server-backed) ===
+  const favoritesQuery = useFavorites(isLoggedIn);
+  const addFavoriteMutation = useAddFavorite();
+  const removeFavoriteMutation = useRemoveFavorite();
+  const clearFavoritesMutation = useClearFavorites();
+  const favorites = favoritesQuery.data ?? [];
+
+  const isFavorite = (productId: string) =>
+    favorites.some((item) => item.id === productId);
 
   const addOrRemoveFavorites = (product: Product) => {
-    const current = getFavorite();
-
-    if (current.find((item) => item.id === product.id)) {
-      removeFromFavorites(current.findIndex((item) => item.id === product.id));
-      return;
-    };
-    setFavorites([...current, product]);
+    if (!isLoggedIn) return;
+    if (isFavorite(product.id)) {
+      removeFavoriteMutation.mutate(product.id);
+    } else {
+      addFavoriteMutation.mutate(product.id);
+    }
   };
 
   const removeFromFavorites = (index: number) => {
-    const current = getFavorite();
-    const updated = current.filter((_, i) => i !== index);
-    setFavorites(updated);
+    const item = favorites[index];
+    if (!item) return;
+    removeFavoriteMutation.mutate(item.id);
   };
 
-  const isFavorite = (productId: string) => {
-    const current = getFavorite();
-    return current.some((item) => item.id === productId);
-  }
+  const clearFavorites = () => {
+    clearFavoritesMutation.mutate();
+  };
 
+  // === Drawer / UI state (purely local) ===
   const [cartState, setCartState] = useState<{ isOpen: boolean; path: string }>({
     isOpen: false,
     path: pathname,
@@ -181,39 +219,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
-
-
   const [title, setTitle] = useState<string>("");
 
   const toggleTitle = (newTitle: string) => {
     setTitle(newTitle);
   };
 
-
-  const [cartNoti, setCartNoti] = useState<string | null>(null);
-
-  const showCartNoti = (message: string) => {
-    setCartNoti(message);
+  const closeCartPopUp = () => {
+    setCartPopUp(null);
   };
 
-  useEffect(() => {
-    if (cartNoti) {
-      const timer = setTimeout(() => {
-        setCartNoti(null);
-      }, 2500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [cartNoti]);
-
-  useEffect(() => {
-    if (cartNoti) {
-      queueMicrotask(() => setCartNoti(null));
-      return;
-    }
-  }, [cartNoti, pathname]);
-
-
+  // === Order details (checkout form draft - still local) ===
   const emptyOrderDetails: OrderDetails = {
     deliveryMethod: "",
     destination: { name: "", street: "", city: "", zipCode: "", phone: "", email: "" },
@@ -226,16 +242,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     clearItem: clearOrderDetails,
     getItem: getOrderDetails,
   } = useLocalStorage<OrderDetails>("order-details", emptyOrderDetails);
-
-  const {
-    setItem: setOrderHistory,
-    getItem: getOrderHistory,
-  } = useLocalStorage<CompletedOrder[]>("order-history", []);
-
-  const addToOrderHistory = (order: CompletedOrder[]) => {
-    const current = getOrderHistory();
-    setOrderHistory([...current, ...order]);
-  }
 
   return (
     <AppContext.Provider
@@ -260,20 +266,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         toggleTitle,
         setOrderDetails,
         getOrderDetails,
+        cartPopUp,
+        closeCartPopUp,
         clearOrderDetails,
-        addToOrderHistory,
-        getOrderHistory,
-        showCartNoti,
       }}
     >
       {children}
 
-      {cartNoti && (
-        <CartNotificationPortal
-          message={cartNoti}
-          onClose={() => setCartNoti(null)}
-        />
-      )}
     </AppContext.Provider>
   );
 }

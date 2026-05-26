@@ -38,6 +38,9 @@
       "@/context/*": [
         "./src/context/*"
       ],
+      "@/lib/*": [
+        "./src/lib/*"
+      ],
     },
   },
   "include": [
@@ -46,7 +49,9 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "**/*.mts",
+    "src/components/AccountDrawer",
+    "src/components/PopUp"
   ],
   "exclude": [
     "node_modules"

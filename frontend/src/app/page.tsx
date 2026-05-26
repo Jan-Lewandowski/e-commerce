@@ -1,21 +1,22 @@
 'use client';
 
-import data from "../data.json";
-import FilterPanel from "@/components/FilterPanel/FilterPanel";
-import FiltersAsideForm from "@/components/FiltersAsideForm/FiltersAsideForm";
-import Header from "@/components/Header/Header";
-import ProductsList from "@/components/ProductsList/ProductsList";
-import WallHeader from "@/components/WallHeader/WallHeader";
+import FilterPanel from "@/components/FilterPanel";
+import FiltersAsideForm from "@/components/FiltersAsideForm";
+import Header from "@/components/Header";
+import ProductsList from "@/components/ProductsList";
+import WallHeader from "@/components/WallHeader";
 import { useAuth } from "@/context/AuthContext";
-import { ProductsCatalog } from '@/types/productsCatalog';
+import { useCategories, useProducts } from "@/lib/queries/catalog";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect } from "react";
 
 export default function Home() {
-  const { categories, products } = data as ProductsCatalog;
-
   const { isLoggedIn, isUserLoading } = useAuth();
   const router = useRouter();
+
+  const categoriesQuery = useCategories();
+  const productsQuery = useProducts();
+
   useEffect(() => {
     if (isUserLoading) return;
     if (!isLoggedIn) {
@@ -31,6 +32,9 @@ export default function Home() {
     return null;
   }
 
+  const categories = categoriesQuery.data ?? [];
+  const products = productsQuery.data ?? [];
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -40,7 +44,13 @@ export default function Home() {
       <WallHeader />
       <main className="mx-auto flex w-full max-w-7xl flex-col items-start gap-6 px-4 pb-12 sm:px-6 lg:flex-row">
         <Suspense fallback={<div className="text-sm text-slate-500">Ładowanie produktów...</div>}>
-          <ProductsList productsList={products} />
+          {productsQuery.isLoading ? (
+            <div className="text-sm text-slate-500">Ładowanie produktów...</div>
+          ) : productsQuery.isError ? (
+            <div className="text-sm text-red-600">Nie udało się załadować produktów.</div>
+          ) : (
+            <ProductsList productsList={products} />
+          )}
         </Suspense>
         <Suspense fallback={<div className="text-sm text-slate-500">Ładowanie filtrów...</div>}>
           <FiltersAsideForm />

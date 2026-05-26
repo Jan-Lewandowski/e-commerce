@@ -4,6 +4,8 @@ import { createContext, useContext } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { User } from "@/types/user";
 import { useRouter } from "next/navigation";
+import { apiFetch } from "@/lib/apiClient";
+import { queryKeys } from "@/lib/queryKeys";
 
 type AuthContextType = {
   user: User | null | undefined;
@@ -18,52 +20,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const fetchMe = async () => {
-    const response = await fetch("http://localhost:3001/api/auth/me", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!response.ok) {
-      throw new Error("Błąd podczas sprawdzania autoryzacji");
-    }
-
-    return response.json();
-  };
-
-  const { data: user, isLoading: isUserLoading } = useQuery({
-    queryKey: ["me"],
-    queryFn: fetchMe,
+  const { data: user, isLoading: isUserLoading } = useQuery<User | null>({
+    queryKey: queryKeys.me,
+    queryFn: async () => {
+      try {
+        return await apiFetch<User>("/api/auth/me");
+      } catch (err) {
+        if (err instanceof Error && err.message.includes("HTTP 401")) return null;
+        throw err;
+      }
+    },
     retry: false,
   });
 
   const isLoggedIn = !!user;
 
-  const logoutRequest = async () => {
-    const response = await fetch("http://localhost:3001/api/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    });
-    if (!response.ok) {
-      throw new Error("Błąd podczas wylogowywania");
-    }
-  };
-
   const { mutate: logout } = useMutation({
-    mutationFn: logoutRequest,
+    mutationFn: () => apiFetch<void>("/api/auth/logout", { method: "POST" }),
     onSuccess: async () => {
-      queryClient.setQueryData(["me"], null);
-      await queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.setQueryData(queryKeys.me, null);
+      queryClient.removeQueries({ queryKey: queryKeys.cart });
+      queryClient.removeQueries({ queryKey: queryKeys.favorites });
+      queryClient.removeQueries({ queryKey: queryKeys.myOrders });
+      queryClient.removeQueries({ queryKey: queryKeys.adminOrders });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.me });
       router.replace("/signup");
-    }
+    },
   });
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, user, isUserLoading, logout }}>
       {children}
-    </AuthContext.Provider >
+    </AuthContext.Provider>
   );
 }
 

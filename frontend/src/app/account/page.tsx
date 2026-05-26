@@ -1,20 +1,22 @@
 'use client'
 
-import Header from '@/components/Header/Header';
+import Header from '@/components/Header';
 import Button from '@/components/ui/Button/Button';
-import { useApp } from '@/context/AppContext';
 import { useAuth } from '@/context/AuthContext';
+import { useMyOrders } from '@/lib/queries/orders';
 import { useRouter } from 'next/navigation';
 
+function profileValue(value?: string | null) {
+  return value || "Brak danych";
+}
+
 export default function ProfilePage() {
-  const { getOrderHistory } = useApp();
-  const { user: authUser } = useAuth();
+  const { user: authUser, isLoggedIn } = useAuth();
   const router = useRouter();
-  const orderHistory = getOrderHistory();
+  const ordersQuery = useMyOrders(isLoggedIn);
 
   const isAdmin = authUser?.role === 'admin';
-
-  const userOrders = orderHistory.filter((order) => order.email === authUser?.email);
+  const userOrders = ordersQuery.data ?? [];
 
   const goToDashboard = () => {
     router.push('/dashboard');
@@ -39,11 +41,23 @@ export default function ProfilePage() {
             <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">Email</div>
             <div className="mt-1 break-all font-semibold text-slate-950">{authUser?.email}</div>
           </div>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <ProfileField label="Imię i nazwisko" value={authUser?.name} />
+            <ProfileField label="Telefon" value={authUser?.phone} />
+            <ProfileField label="Ulica" value={authUser?.street} />
+            <ProfileField label="Miasto" value={authUser?.city} />
+            <ProfileField label="Kod pocztowy" value={authUser?.zipCode} />
+          </div>
         </section>
 
         <section className="mt-8">
           <h2 className="text-2xl font-black text-slate-950">Historia zamówień</h2>
-          {userOrders.length === 0 ? (
+          {ordersQuery.isLoading ? (
+            <div className="mt-4 rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">Ładowanie zamówień...</div>
+          ) : ordersQuery.isError ? (
+            <div className="mt-4 rounded-2xl border border-dashed border-red-300 bg-white p-8 text-center text-sm text-red-600">Nie udało się załadować zamówień.</div>
+          ) : userOrders.length === 0 ? (
             <div className="mt-4 rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">Brak zamówień</div>
           ) : (
             <div className="mt-4 grid gap-4">
@@ -74,5 +88,14 @@ export default function ProfilePage() {
         </section>
       </main>
     </>
+  );
+}
+
+function ProfileField({ label, value }: { label: string; value?: string | null }) {
+  return (
+    <div className="rounded-2xl bg-slate-50 p-4">
+      <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">{label}</div>
+      <div className="mt-1 break-words font-semibold text-slate-950">{profileValue(value)}</div>
+    </div>
   );
 }

@@ -5,16 +5,19 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CompletedOrder } from "@/types/completedOrder";
 import Button from "@/components/ui/Button/Button";
 import { useAuth } from "@/context/AuthContext";
+import { useCreateOrder } from "@/lib/queries/orders";
+import { useUpdateMyProfile } from "@/lib/queries/user";
 
 const inputClass = "h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100";
 
 export default function PaymentPage() {
-  const { cart, clearCart, getOrderDetails } = useApp();
+  const { cart, clearCart, getOrderDetails, clearOrderDetails } = useApp();
   const { user } = useAuth();
   const router = useRouter();
+  const createOrderMutation = useCreateOrder();
+  const updateMyProfileMutation = useUpdateMyProfile();
 
   const [status, setStatus] = useState<"idle" | "processing" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -37,61 +40,51 @@ export default function PaymentPage() {
       setStatus("processing");
       setErrorMsg("");
       try {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-
-        const items = cart.map((item) => ({
-          productId: item.product.id,
-          name: item.product.name,
-          quantity: item.quantity,
-          unitPrice: item.product.price,
-          currency: "PLN",
-          lineTotal: item.product.price * item.quantity,
-        }));
-
-        const order: CompletedOrder = {
-          orderId: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
-          email: user?.email || "",
-          createdAt: new Date().toISOString(),
-          status: "completed",
-          items,
-          totalAmount: totalPrice,
-          paymentMethod,
-
-          deliveryMethod: orderDetails?.deliveryMethod || "",
-          shipper: orderDetails?.shipper,
-          destination: orderDetails?.destination || {
-            name: "",
-            street: "",
-            city: "",
-            zipCode: "",
-            phone: "",
-            email: "",
-          },
+        const destination = orderDetails?.destination || {
+          name: "",
+          street: "",
+          city: "",
+          zipCode: "",
+          phone: "",
+          email: "",
         };
 
-        const existingRaw = typeof window !== "undefined" ? localStorage.getItem("order-history") : null;
-        let existing: CompletedOrder[] = [];
-        if (existingRaw) {
-          try {
-            const parsed = JSON.parse(existingRaw);
-            if (Array.isArray(parsed)) existing = parsed;
-          } catch {
-            existing = [];
-          }
-        }
+        await createOrderMutation.mutateAsync({
+          items: cart.map((item) => ({
+            productId: item.product.id,
+            quantity: item.quantity,
+          })),
+          destination,
+          paymentMethod,
+          deliveryMethod: orderDetails?.deliveryMethod || "",
+          shipper: orderDetails?.shipper,
+          email: user?.email,
+        });
 
-        const nextHistory = [order, ...existing];
-        if (typeof window !== "undefined") {
-          localStorage.setItem("order-history", JSON.stringify(nextHistory));
+        try {
+          await updateMyProfileMutation.mutateAsync({
+            name: destination.name,
+            phone: destination.phone,
+            street: destination.street,
+            city: destination.city,
+            zipCode: destination.zipCode,
+          });
+        } catch (profileError) {
+          console.error("Profile update error", profileError);
         }
 
         setStatus("success");
 
-        clearCart()
+        clearCart();
+        clearOrderDetails();
       } catch (err) {
         console.error("Payment error", err);
         setStatus("error");
-        setErrorMsg("Wystąpił błąd podczas płatności. Spróbuj ponownie.");
+        if (err instanceof Error && err.message) {
+          setErrorMsg(err.message);
+        } else {
+          setErrorMsg("Wystąpił błąd podczas płatności. Spróbuj ponownie.");
+        }
       }
     },
   });

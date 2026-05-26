@@ -1,6 +1,6 @@
 'use client'
 
-import Header from "@/components/Header/Header";
+import Header from "@/components/Header";
 import Button from "@/components/ui/Button/Button";
 import { useApp } from "@/context/AppContext";
 import { useAuth } from "@/context/AuthContext";
@@ -14,6 +14,7 @@ const inputClass = "h-11 rounded-xl border border-slate-200 bg-white px-3 text-s
 const labelClass = "text-sm font-semibold text-slate-700";
 const errorClass = "rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-600";
 const radioLabelClass = "flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-orange-200 hover:bg-orange-50";
+const emptyDestination = { name: "", street: "", city: "", zipCode: "", phone: "", email: "" };
 
 export default function OrderPage() {
   const { cart } = useApp()
@@ -51,12 +52,25 @@ export default function OrderPage() {
     return getOrderDetails()?.shipper || "";
   }
   const getInitialDestination = () => {
-    if (typeof window === "undefined") return { name: "", street: "", city: "", zipCode: "", phone: "", email: "" };
-    const storedDestination = getOrderDetails()?.destination || { name: "", street: "", city: "", zipCode: "", phone: "", email: "" };
-    if (!storedDestination.email && user?.email) {
-      return { ...storedDestination, email: user.email };
+    if (typeof window === "undefined") return emptyDestination;
+    const storedDestination = getOrderDetails()?.destination;
+    const hasStoredDestination = storedDestination && Object.values(storedDestination).some(Boolean);
+
+    if (hasStoredDestination) {
+      if (!storedDestination.email && user?.email) {
+        return { ...storedDestination, email: user.email };
+      }
+      return storedDestination;
     }
-    return storedDestination;
+
+    return {
+      name: user?.name || "",
+      street: user?.street || "",
+      city: user?.city || "",
+      zipCode: user?.zipCode || "",
+      phone: user?.phone || "",
+      email: user?.email || "",
+    };
   }
 
   const getInitialPaymentMethod = () => {

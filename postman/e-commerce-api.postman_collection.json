@@ -1,0 +1,879 @@
+{
+  "info": {
+    "_postman_id": "7f3a9c2e-1b4d-4e6a-9f8c-2d5e6a7b8c9d",
+    "name": "E-commerce API (Docker Compose)",
+    "description": "39 endpointow API przez NGINX (docker compose up --build). Najpierw: 00 Setup > Login (admin).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "00 - Setup",
+      "item": [
+        {
+          "name": "Login (admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Knex + PostgreSQL. Zapisuje authToken do environment."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+                  "var json = pm.response.json();",
+                  "if (json.token) { pm.environment.set(\"authToken\", json.token); }"
+                ]
+              }
+            }
+          ],
+          "id": "85053deb-0d4d-44f0-b187-7c30a9942161"
+        },
+        {
+          "name": "Me (sprawdz sesje)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/auth/me"
+          },
+          "response": [],
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "key": "token",
+                "value": "{{authToken}}",
+                "type": "string"
+              }
+            ]
+          },
+          "id": "7cb7e7be-9d87-431e-8301-2d3d353b88a6"
+        }
+      ],
+      "id": "aa631311-2476-4458-b771-c8ffb46913f5"
+    },
+    {
+      "name": "01 - Auth [Knex + PostgreSQL]",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"jan.kowalski@example.com\",\n  \"password\": \"haslo123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "id": "41bbddaf-4e8b-4fce-b204-1d4045171942"
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j = pm.response.json();",
+                  "if (j.token) { pm.environment.set(\"authToken\", j.token); }"
+                ]
+              }
+            }
+          ],
+          "id": "75c151d3-5e3d-4cc7-9092-877a27d8c431"
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/auth/me"
+          },
+          "response": [],
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "key": "token",
+                "value": "{{authToken}}",
+                "type": "string"
+              }
+            ]
+          },
+          "id": "8a7fadee-ddd4-48f6-82a7-0214a0c7aba4"
+        },
+        {
+          "name": "Update profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/users/me/profile",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jan Kowalski\",\n  \"phone\": \"+48 600 100 200\",\n  \"street\": \"ul. Testowa 5\",\n  \"city\": \"Warszawa\",\n  \"zipCode\": \"00-001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "id": "1696adf3-b450-4f3b-abc9-82d833307eac"
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/auth/logout"
+          },
+          "response": [],
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "key": "token",
+                "value": "{{authToken}}",
+                "type": "string"
+              }
+            ]
+          },
+          "id": "ecb61d83-0695-47c2-bab7-2f8e767b26ea"
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{authToken}}",
+            "type": "string"
+          }
+        ]
+      },
+      "id": "00ecf517-7145-4fb9-9d01-72a16f3144e8"
+    },
+    {
+      "name": "02 - Katalog [Knex]",
+      "item": [
+        {
+          "name": "GET Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/categories"
+          },
+          "response": [],
+          "id": "cccf81a8-a72c-4fcf-9b95-b696249ab9b1"
+        },
+        {
+          "name": "GET Products (filtry)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/products?category=Laptopy&priceFrom=3000&ratingFrom=4&q=lenovo"
+          },
+          "response": [],
+          "id": "84115eaa-4156-4001-96bc-5d308e4bb63d"
+        },
+        {
+          "name": "GET Product by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/products/{{productId}}"
+          },
+          "response": [],
+          "id": "d5e1ee6a-5bc2-4fac-b307-53473b2a50cd"
+        },
+        {
+          "name": "GET Related products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/products/{{productId}}/related?limit=3"
+          },
+          "response": [],
+          "id": "e65bfaa4-e031-4b69-a0f8-c9472de8bea3"
+        },
+        {
+          "name": "POST Create product (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/products",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"Laptopy\",\n  \"brand\": \"TestBrand\",\n  \"name\": \"Laptop testowy demo\",\n  \"price\": 2499,\n  \"stock\": 15,\n  \"rating\": 4.2,\n  \"description\": \"Opis testowego laptopa do prezentacji projektu.\",\n  \"tags\": [\n    \"laptop\",\n    \"demo\",\n    \"test\"\n  ],\n  \"specs\": {\n    \"procesor\": \"Intel Core i5\",\n    \"ram\": \"16 GB\",\n    \"dysk\": \"512 GB SSD\"\n  },\n  \"thumbnail\": \"/images/products/lenovo-ideapad-5.jpg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "id": "d2739d0b-1e42-4810-9d6c-09c81decc639"
+        },
+        {
+          "name": "POST Create product (form-data)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/products",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "category",
+                  "value": "Laptopy",
+                  "type": "text"
+                },
+                {
+                  "key": "brand",
+                  "value": "TestBrand",
+                  "type": "text"
+                },
+                {
+                  "key": "name",
+                  "value": "Laptop z uploadem zdjecia",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "2799",
+                  "type": "text"
+                },
+                {
+                  "key": "stock",
+                  "value": "10",
+                  "type": "text"
+                },
+                {
+                  "key": "rating",
+                  "value": "4.5",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Produkt testowy z uploadem miniatury.",
+                  "type": "text"
+                },
+                {
+                  "key": "tags",
+                  "value": "[\"laptop\",\"upload\",\"demo\"]",
+                  "type": "text"
+                },
+                {
+                  "key": "specs",
+                  "value": "{\"procesor\":\"AMD Ryzen 5\",\"ram\":\"32 GB\"}",
+                  "type": "text"
+                },
+                {
+                  "key": "thumbnail",
+                  "value": "/images/products/lenovo-ideapad-5.jpg",
+                  "type": "text"
+                }
+              ]
+            },
+            "description": "Opcjonalnie zmien pole thumbnail na typ File i wybierz PNG/JPG (max 5 MB)."
+          },
+          "response": [],
+          "id": "70fd6669-ef41-40be-9d9e-eadd7f1c7b08"
+        },
+        {
+          "name": "PUT Update product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/products/{{productId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Laptop Lenovo IdeaPad 5 15 (edycja)\",\n  \"price\": 3199,\n  \"stock\": 5,\n  \"description\": \"Zaktualizowany opis produktu Lenovo IdeaPad 5.\",\n  \"tags\": [\n    \"laptop\",\n    \"office\",\n    \"promocja\"\n  ],\n  \"specs\": {\n    \"procesor\": \"Intel Core i5-12450H\",\n    \"ram\": \"16 GB DDR4\"\n  },\n  \"thumbnail\": \"/images/products/lenovo-ideapad-5.jpg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "id": "41854de6-a5d4-403e-b868-4ef535506096"
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{authToken}}",
+            "type": "string"
+          }
+        ]
+      },
+      "id": "91b70cc6-7082-4d1f-bc2f-c9142e48f359"
+    },
+    {
+      "name": "03 - Koszyk [Knex]",
+      "item": [
+        {
+          "name": "GET Cart",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/cart"
+          },
+          "response": [],
+          "id": "2cb6c9dc-d638-444a-b83e-3de65ca1d72c"
+        },
+        {
+          "name": "PUT Set quantity",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/cart/{{productId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "id": "f441fc35-e4aa-451f-bf01-1760bb026391"
+        },
+        {
+          "name": "DELETE Remove item",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/cart/{{productId}}"
+          },
+          "response": [],
+          "id": "71d5c170-23b6-47f5-bf38-a76e3563de8e"
+        },
+        {
+          "name": "DELETE Clear cart",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/cart"
+          },
+          "response": [],
+          "id": "106366c6-5de8-477e-b103-7caec18976b0"
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{authToken}}",
+            "type": "string"
+          }
+        ]
+      },
+      "id": "4711d903-e4e7-4ed9-b45b-95ab1b8a7b67"
+    },
+    {
+      "name": "04 - Ulubione [Knex]",
+      "item": [
+        {
+          "name": "GET Favorites",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/favorites"
+          },
+          "response": [],
+          "id": "3e191840-11e7-4999-b75c-70689316d28c"
+        },
+        {
+          "name": "POST Add favorite",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/favorites/SMART-001"
+          },
+          "response": [],
+          "id": "83513fae-e17c-44f0-bf8e-00f7210238b8"
+        },
+        {
+          "name": "DELETE Remove favorite",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/favorites/SMART-001"
+          },
+          "response": [],
+          "id": "f0d29c5c-52f9-4a72-83eb-0cfa97297beb"
+        },
+        {
+          "name": "DELETE Clear favorites",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/favorites"
+          },
+          "response": [],
+          "id": "a1211cfb-a7e1-4c47-bb6c-05b8167e1b96"
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{authToken}}",
+            "type": "string"
+          }
+        ]
+      },
+      "id": "54586112-c7f9-410d-8555-0af4d03e80d4"
+    },
+    {
+      "name": "05 - Zamowienia [Knex + pg native]",
+      "item": [
+        {
+          "name": "POST Create order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"productId\": \"{{productId2}}\",\n      \"quantity\": 1\n    }\n  ],\n  \"destination\": {\n    \"name\": \"Jan Kowalski\",\n    \"street\": \"ul. Marszalkowska 10\",\n    \"city\": \"Warszawa\",\n    \"zipCode\": \"00-001\",\n    \"phone\": \"+48 600 111 222\",\n    \"email\": \"admin@example.com\"\n  },\n  \"paymentMethod\": \"karta\",\n  \"deliveryMethod\": \"kurier\",\n  \"shipper\": \"DHL\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j = pm.response.json();",
+                  "if (j.orderId) { pm.environment.set(\"orderId\", j.orderId); }"
+                ]
+              }
+            }
+          ],
+          "id": "7e8efd59-2f6a-464f-8a5d-be46b38c0594"
+        },
+        {
+          "name": "GET My orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/orders/me"
+          },
+          "response": [],
+          "id": "cb0b039e-87e6-4111-9cd2-7be77f8750a6"
+        },
+        {
+          "name": "GET Order by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/orders/{{orderId}}"
+          },
+          "response": [],
+          "id": "d2fa2c5b-0fff-4427-9d30-321ce36f6a33"
+        },
+        {
+          "name": "GET Admin - all orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/admin/orders"
+          },
+          "response": [],
+          "id": "b46aac0f-8bce-4fd6-9c33-525c5d0baf3d"
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{authToken}}",
+            "type": "string"
+          }
+        ]
+      },
+      "id": "87b6f118-2020-49fa-8a81-7a3e9ecc1de0"
+    },
+    {
+      "name": "06 - Dostawcy [Sequelize]",
+      "item": [
+        {
+          "name": "GET List suppliers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/suppliers"
+          },
+          "response": [],
+          "id": "032d37ed-ef9c-4231-826f-7f1399c21d56"
+        },
+        {
+          "name": "GET Supplier by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/suppliers/{{supplierId}}"
+          },
+          "response": [],
+          "id": "58281eb6-8c56-4a5b-a8b9-0d75729e1ab3"
+        },
+        {
+          "name": "GET Supplier products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/suppliers/{{supplierId}}/products"
+          },
+          "response": [],
+          "id": "8e4fd31e-b880-4bcf-9041-7a3690c5f093"
+        },
+        {
+          "name": "POST Create supplier",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/suppliers",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Nowy Dostawca Demo\",\n  \"email\": \"kontakt@nowydostawca.pl\",\n  \"rating\": 4.5,\n  \"contactName\": \"Adam Nowak\",\n  \"phone\": \"+48 500 600 700\",\n  \"address\": \"ul. Fabryczna 1, 00-100 Warszawa\",\n  \"productIds\": [\n    \"LAP-001\",\n    \"LAP-002\"\n  ],\n  \"leadDays\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "id": "5933fb00-c12b-4a19-a608-d17c37f297de"
+        }
+      ],
+      "id": "e273d104-e532-4690-b0f5-ceff181dc1de"
+    },
+    {
+      "name": "07 - Promocje [Prisma]",
+      "item": [
+        {
+          "name": "GET All promotions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/promotions"
+          },
+          "response": [],
+          "id": "fe951ab4-92d4-4bd6-b477-c93ddf917b12"
+        },
+        {
+          "name": "GET Active promotions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/promotions/active"
+          },
+          "response": [],
+          "id": "9d2678f9-9656-48ce-a76c-a350c9cc70d7"
+        },
+        {
+          "name": "POST Create promotion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/promotions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"DEMO10\",\n  \"description\": \"Promocja demo 10% na laptopy\",\n  \"percentOff\": 10,\n  \"startsAt\": \"2026-01-01T00:00:00.000Z\",\n  \"endsAt\": \"2026-12-31T23:59:59.000Z\",\n  \"productIds\": [\n    \"LAP-001\",\n    \"LAP-002\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j = pm.response.json();",
+                  "if (j.id) { pm.environment.set(\"promotionId\", String(j.id)); }"
+                ]
+              }
+            }
+          ],
+          "id": "35e90691-3caf-4aec-8950-792000cd792e"
+        },
+        {
+          "name": "GET Promotion by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/promotions/{{promotionId}}"
+          },
+          "response": [],
+          "id": "0276e3e4-b5db-409d-823d-cd5e3afea1dd"
+        },
+        {
+          "name": "DELETE Promotion",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/promotions/{{promotionId}}"
+          },
+          "response": [],
+          "id": "00da1733-2283-46e4-82aa-0036ec7b1a4b"
+        }
+      ],
+      "id": "bc7cae3c-b452-4524-92d2-90ee0c9d167e"
+    },
+    {
+      "name": "08 - Recenzje native [MongoDB driver]",
+      "item": [
+        {
+          "name": "GET Reviews (zapisz ID)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/reviews?productId=LAP-001"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var reviews = pm.response.json();",
+                  "if (Array.isArray(reviews) && reviews.length > 0) {",
+                  "  pm.environment.set(\"reviewId\", reviews[0].id);",
+                  "  pm.environment.set(\"reviewerProfileId\", reviews[0].reviewerProfileId);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "id": "9134e7ad-8235-4922-bb53-c0ba1978f616"
+        },
+        {
+          "name": "POST Create review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/reviews",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"LAP-001\",\n  \"authorEmail\": \"ewa.wojcik@example.com\",\n  \"reviewerProfileId\": \"{{reviewerProfileId}}\",\n  \"rating\": 4,\n  \"title\": \"Dobra jakosc w tej cenie\",\n  \"body\": \"Laptop spelnia oczekiwania do pracy biurowej i przegladania internetu.\",\n  \"tags\": [\n    \"quality\",\n    \"value\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "id": "19d490f6-4891-4141-9b7a-e5733bfac945"
+        },
+        {
+          "name": "PUT Update review",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/reviews/{{reviewId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Zaktualizowany tytul recenzji\",\n  \"body\": \"Zaktualizowana tresc recenzji po edycji w Postmanie.\",\n  \"rating\": 5,\n  \"tags\": [\n    \"quality\",\n    \"updated\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "id": "4b0203ab-c06d-4bfa-8c72-7b2452fc22bc"
+        },
+        {
+          "name": "DELETE Review",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/reviews/{{reviewId}}"
+          },
+          "response": [],
+          "id": "231dc86f-a2c8-484e-a404-0a2ce4406622"
+        }
+      ],
+      "id": "f659076d-905e-4f2e-973c-780b1fbd691f"
+    },
+    {
+      "name": "09 - Recenzje Mongoose [Mongoose]",
+      "item": [
+        {
+          "name": "POST Create review (mongoose)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/reviews/mongoose",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"SMART-001\",\n  \"authorEmail\": \"jakub.kaminski@example.com\",\n  \"reviewerProfileId\": \"{{reviewerProfileId}}\",\n  \"rating\": 5,\n  \"title\": \"Swietny smartfon\",\n  \"body\": \"Samsung Galaxy S23 dziala plynnie i ma doskonaly aparat.\",\n  \"tags\": [\n    \"smartphone\",\n    \"camera\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "id": "7121bcec-7772-4e2a-bf8c-166a9831b2c6"
+        },
+        {
+          "name": "GET Review detail (populate)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/reviews/{{reviewId}}/detail"
+          },
+          "response": [],
+          "id": "40e5bcb5-ffbe-4dd0-b674-781448fc4dc6"
+        }
+      ],
+      "id": "2b7cda75-1ce8-4c93-9486-aad14f6e1d13"
+    },
+    {
+      "name": "10 - Analityka [Aggregation Pipeline]",
+      "item": [
+        {
+          "name": "GET Product review stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/analytics/products/{{productId}}/review-stats"
+          },
+          "response": [],
+          "id": "ae2b5b87-4fae-438b-835a-504480b39409"
+        }
+      ],
+      "id": "76ba7e58-47de-4efe-9304-da5ee93ba74a"
+    }
+  ]
+}
