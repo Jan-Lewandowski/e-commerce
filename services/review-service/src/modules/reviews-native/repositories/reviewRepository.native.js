@@ -84,6 +84,8 @@ export async function deleteReview(reviewId) {
   return result.deletedCount > 0;
 }
 
+//indeks na productId i createdAt do szybkiego pobierania recenzji dla produktu, 
+// indeks tekstowy na title i body do wyszukiwania
 export async function ensureReviewIndexes() {
   const collection = reviewsCollection();
   await collection.createIndex({ productId: 1, createdAt: -1 });

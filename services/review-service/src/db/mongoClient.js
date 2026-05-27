@@ -1,8 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-/** @type {MongoClient | null} */
 let client = null;
-/** @type {import('mongodb').Db | null} */
 let db = null;
 
 export async function connectMongo(uri) {

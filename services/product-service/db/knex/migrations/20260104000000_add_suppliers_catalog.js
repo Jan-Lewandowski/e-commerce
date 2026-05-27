@@ -1,6 +1,4 @@
-// === T3 — Sequelize v6 ===
-// Tworzy tabele uzywane przez modele Supplier i ProductSupplier przed seedem.
-// Sequelize nadal obsluguje runtime routes/model validation; Knex zapewnia schemat w migracjach.
+//knex tworzy tabele supplier i product_supplier ale sequelize ją obsługuje
 
 
 export async function up(knex) {

@@ -1,6 +1,4 @@
-// === T2 — Knex.js ===
-// Seed domenowy: kategorie i produkty z `data/catalog.json`.
-// Idempotentny (czysci tabele przed insertem) - bezpieczny do uzytku w dev/CI.
+//idempotenty seed
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';

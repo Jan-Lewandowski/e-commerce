@@ -1,11 +1,5 @@
 #!/bin/sh
-# Runs all schema setup before starting product-service:
-#   1. Prisma migrate deploy (T4) - applies first, so on a fresh DB Prisma
-#      creates `_prisma_migrations` before Knex makes the schema "non-empty"
-#      (Prisma refuses P3005 if it sees other tables and no own history).
-#   2. Knex migrations (T2)  - creates categories, products, orders, order_items
-#   3. Knex seed (T2)        - inserts catalog data
-# Sequelize sync (T3) runs inside app.js on startup.
+# 1. prisma migrate db na czystej bazie prismy, 2. knex migrate db 3. knex seed 4. seqelize sync w app.js
 set -e
 
 echo "[migrations] prisma migrate deploy"
