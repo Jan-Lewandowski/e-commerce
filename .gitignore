@@ -1,1 +1,38 @@
-README_PL
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.*.example
+
+# Dependency directories
+**/node_modules/
+
+# Build / cache artifacts
+**/.next/
+**/out/
+**/build/
+**/dist/
+**/coverage/
+**/*.tsbuildinfo
+
+# Docker / database local state
+**/postgres-data/
+**/mongo-data/
+
+# Local uploads/storage
+services/product-service/public/uploads/
