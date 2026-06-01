@@ -4,7 +4,9 @@
   <img width="1920" height="1080" alt="cart-page-e-commerce" src="https://github.com/user-attachments/assets/f81be594-c101-45e3-9fd8-f0f7349b3343" />
   <img width="1920" height="1080" alt="delivery-details-page-e-commerce" src="https://github.com/user-attachments/assets/8324e7a8-9c50-4d84-a1ab-77af4d83a4ed" />
   <img width="1920" height="1080" alt="order-summary-page-e-commerce" src="https://github.com/user-attachments/assets/fd1ec8ac-c50d-44dd-a8ad-731cc9f3f043" />
-  <img width="1920" height="1080" alt="admin-panel-page-e-commerce" src="https://github.com/user-attachments/assets/88bd4037-fad9-481c-ac9b-c29c51b72100" />
+  <img width="1920" height="1080" alt="user-data-e-commerce" src="https://github.com/user-attachments/assets/9235974e-ceb9-483f-908a-40c684bc994d" />
+  <img width="1920" height="1080" alt="admin-panel-page-e-commerce" src="https://github.com/user-attachments/assets/ec8c16c0-c752-499f-8e9f-8bc4654c9090" />
+  <img width="1920" height="1080" alt="products-management-e-commerce" src="https://github.com/user-attachments/assets/569549b0-7213-4211-80e7-010b4f55c661" />
 </p>
 
 An example full-stack e-commerce demo implemented as modular services (frontend, auth, product, review) with a Docker-first developer experience. Knex, Sequelize and Prisma are included to showcase alternative approaches to relational database management; the `review-service` demonstrates MongoDB usage for document-based data.
