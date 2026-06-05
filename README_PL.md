@@ -10,45 +10,56 @@
 Przykładowa aplikacja e-commerce w architekturze full‑stack, z podziałem na modułowe serwisy (frontend, auth, product, review) i podejściem „Docker‑first” dla programisty. W repozytorium znajdują się przykładowe podejścia do zarządzania relacyjną bazą danych: Knex, Sequelize i Prisma; `review-service` demonstruje użycie MongoDB dla danych dokumentowych.
 
 ## Funkcje
-- Przeglądanie i filtrowanie produktów
-- Dodawanie do koszyka i zarządzanie ulubionymi
-- Składanie zamówień i przegląd historii zamówień
-- Panele dostawcy i administratora (podstawowe operacje CRUD)
-- Serwis opinii z danymi startowymi i agregacjami
+- Przegladanie i filtrowanie produktow
+- Dodawanie do koszyka i zarzadzanie ulubionymi
+- Skladanie zamowien i przeglad historii zamowien
+- Panele dostawcy i administratora
+- Serwis opinii z seedami i agregacjami
 
 ## Technologie
-Poniżej krótka lista technologii i bibliotek użytych w projekcie, pogrupowana według obszarów.
-
 - **Frontend**: Next.js, React, TypeScript, Tailwind CSS, Material UI (MUI), TanStack Query, Formik, Yup
 - **Auth service**: Node.js, Express, Knex (migracje i seedy), PostgreSQL, bcryptjs, dotenv
-- **Product service**: Node.js, Express, Knex, Prisma (schema i migracje), Sequelize, PostgreSQL
+- **Product service**: Node.js, Express, Knex, Prisma, Sequelize, PostgreSQL, dowod cache w Redis
 - **Review service**: Node.js, Express, natywny driver MongoDB, Mongoose
-- **API i infrastruktura**: serwisy REST, NGINX jako reverse proxy, rewrites Next.js do proxy backendu, Docker & Docker Compose
+- **API i infrastruktura**: REST, NGINX jako reverse proxy, Docker & Docker Compose
 
 ## Uruchomienie
 
-### Opcja A — Docker Compose (zalecane)
+### Opcja A - Docker Compose (zalecane)
 
 ```bash
 docker compose up --build
 ```
 
-Otwórz **http://localhost** (NGINX na porcie 80).
+Otworz **http://localhost** (NGINX na porcie 80).
 
-Uruchamiane usługi:
-- **NGINX** — punkt wejścia publiczny
-- **frontend** — Next.js (wywołania `/api/*` w tej samej domenie)
-- **auth-service** — użytkownicy/sesje w Postgres (migracje Knex + seedy)
-- **product-service** — migracje Knex + Prisma i seedy
-- **review-service** — seedy MongoDB + API opinii
-- **postgres** — bazy danych `products` i `auth`
-- **mongo** — baza `reviews`
+Plik `.env.example` w katalogu glownym opisuje domyslna konfiguracje Compose. Hasla baz danych sa czytane z plikow w `secrets/`; domyslnie uzywane sa commitowane pliki `*.example`, zeby projekt dzialal bez dodatkowego przygotowania. Dla prywatnych lokalnych wartosci skopiuj pliki bez koncowki `.example` i ustaw `POSTGRES_PASSWORD_FILE` / `MONGO_PASSWORD_FILE`.
+
+Uruchamiane uslugi:
+- **NGINX** - publiczny punkt wejscia
+- **frontend** - Next.js (wywolania `/api/*` w tej samej domenie)
+- **auth-service** - uzytkownicy/sesje w Postgres (migracje Knex + seedy)
+- **product-service** - migracje Knex + Prisma, seedy oraz dowod cache Redis na `GET /api/products`
+- **review-service** - seedy MongoDB + API opinii
+- **redis** - dodatkowy komponent wspierajacy aplikacje
+- **postgres** - bazy `products` i `auth`
+- **mongo** - baza `reviews`
 
 Admin seed: `admin@example.com` / `password`
 
-### Opcja B — Wszystkie serwisy na hoście (tryb deweloperski)
+Obrazy aplikacji maja tag `${IMAGE_TAG:-v1}`. Uzyj `IMAGE_TAG=v2`, `IMAGE_TAG=v3` itd., kiedy chcesz zbudowac kolejna lokalna wersje.
 
-1. Uruchom Postgresa (np. `docker compose up postgres -d`) i upewnij się, że istnieją bazy `products` i `auth`.
+Porty hosta dla Postgresa i MongoDB zostaja w `docker-compose.yml`, aby lokalny development byl prosty. Na produkcji nalezy usunac te mapowania portow i zostawic bazy tylko w sieci wewnetrznej Dockera.
+
+Sprawdzenie Redisa:
+
+```bash
+docker compose exec redis redis-cli ping
+```
+
+### Opcja B - Wszystkie serwisy na hoscie (tryb deweloperski)
+
+1. Uruchom Postgresa (np. `docker compose up postgres -d`) i upewnij sie, ze istnieja bazy `products` i `auth`.
 2. **auth-service:**
    ```bash
    cd services/auth-service
@@ -75,14 +86,14 @@ Admin seed: `admin@example.com` / `password`
    npm run seed
    npm run dev
    ```
-5. **frontend** (Next.js proxyuje `/api/*` do backendów przez rewrites w `next.config.ts`):
+5. **frontend** (Next.js proxyuje `/api/*` do backendow przez rewrites w `next.config.ts`):
    ```bash
    cd frontend && npm install
    cp .env.example .env.local
    npm run dev
    ```
 
-Otwórz http://localhost:3000 . Upewnij się, że `auth-service` działa na **:4000**, a `product-service` na **:3002**.
+Otworz http://localhost:3000. Upewnij sie, ze `auth-service` dziala na **:3001**, a `product-service` na **:3002**. Review 
 
 ## Uwagi
 - Admin seed: `admin@example.com` / `password`.

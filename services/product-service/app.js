@@ -8,6 +8,7 @@ import pool from './src/db/pool.js';
 import db from './src/db/knex.js';
 import sequelize from './src/db/sequelize.js';
 import prisma from './src/db/prisma.js';
+import { pingRedis } from './src/db/redis.js';
 
 import { mapPgError } from './src/middleware/mapPgError.js';
 import { errorHandler, notFoundHandler } from './src/middleware/errorMiddleware.js';
@@ -56,6 +57,15 @@ app.use(errorHandler);
 //jesli nie istnieja. bez tego endpointy suppliers nie dzialaja
 
 await sequelize.sync({ alter: false });
+
+const redisPing = await pingRedis().catch((err) => {
+  console.warn('[redis] unavailable:', err.message);
+  return null;
+});
+
+if (redisPing) {
+  console.log(`[redis] connected: ${redisPing}`);
+}
 
 const server = app.listen(port, () => {
   console.log(`product-service is running on port ${port}`);

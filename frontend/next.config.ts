@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 // Option B (host dev without NGINX): browser calls same-origin /api/* on :3000;
 // Next.js rewrites proxy to auth-service and product-service.
 const authServiceUrl =
-  process.env.AUTH_SERVICE_URL?.replace(/\/+$/, "") || "http://localhost:4000";
+  process.env.AUTH_SERVICE_URL?.replace(/\/+$/, "") || "http://localhost:3001";
 const productServiceUrl =
   process.env.PRODUCT_SERVICE_URL?.replace(/\/+$/, "") || "http://localhost:3002";
 

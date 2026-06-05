@@ -19,6 +19,10 @@ pnpm-debug.log*
 !**/.env.example
 !**/.env.*.example
 
+# Local Compose secret values
+secrets/*
+!secrets/*.example
+
 # Dependency directories
 **/node_modules/
 

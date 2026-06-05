@@ -2,10 +2,13 @@ name: jl-ecommerce
 
 services:
   nginx:
-    image: nginx:1.27-alpine
+    image: nginx:1.31-alpine
     container_name: jl-ecommerce-nginx
+    cpus: 0.25
+    mem_limit: 128m
+    mem_reservation: 64m
     ports:
-      - "80:80"
+      - "${NGINX_PORT:-80}:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
@@ -17,6 +20,9 @@ services:
         condition: service_healthy
       review-service:
         condition: service_healthy
+    networks:
+      - public
+      - internal
     restart: unless-stopped
 
   frontend:
@@ -24,12 +30,14 @@ services:
       context: ./frontend
       args:
         NEXT_PUBLIC_API_URL: ""
-    image: jl-ecommerce-frontend
+    image: jl-ecommerce-frontend:${IMAGE_TAG:-v1}
     container_name: jl-ecommerce-frontend
+    cpus: 0.50
+    mem_limit: 512m
+    mem_reservation: 256m
     expose:
       - "3000"
     environment:
-      PORT: 3000
       HOSTNAME: 0.0.0.0
     healthcheck:
       test: [ "CMD-SHELL", "wget -qO- http://127.0.0.1:3000/ > /dev/null || exit 1" ]
@@ -37,42 +45,69 @@ services:
       timeout: 5s
       retries: 10
       start_period: 20s
+    networks:
+      - public
     restart: unless-stopped
 
   auth-service:
     build:
       context: ./services/auth-service
-    image: jl-ecommerce-auth-service
+    image: jl-ecommerce-auth-service:${IMAGE_TAG:-v1}
     container_name: jl-ecommerce-auth-service
+    cpus: 0.50
+    mem_limit: 256m
+    mem_reservation: 128m
     expose:
-      - "4000"
+      - "3001"
     environment:
-      PORT: 4000
-      DATABASE_URL: postgres://ecommerce:ecommerce@postgres:5432/auth
+      PORT: 3001
+      DB_USER: ${POSTGRES_USER:-ecommerce}
+      DB_PASSWORD_FILE: /run/secrets/postgres_password
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: auth
+    secrets:
+      - postgres_password
     depends_on:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD-SHELL", "wget -qO- http://127.0.0.1:4000/health > /dev/null || exit 1" ]
+      test: [ "CMD-SHELL", "wget -qO- http://127.0.0.1:3001/health > /dev/null || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 20s
+    networks:
+      - internal
     restart: unless-stopped
 
   product-service:
     build:
       context: ./services/product-service
-    image: jl-ecommerce-product-service
+    image: jl-ecommerce-product-service:${IMAGE_TAG:-v1}
     container_name: jl-ecommerce-product-service
+    cpus: 0.50
+    mem_limit: 256m
+    mem_reservation: 128m
     expose:
       - "3002"
     environment:
       PORT: 3002
-      DATABASE_URL: postgres://ecommerce:ecommerce@postgres:5432/products
-      AUTH_INTERNAL_URL: http://auth-service:4000
+      DB_USER: ${POSTGRES_USER:-ecommerce}
+      DB_PASSWORD_FILE: /run/secrets/postgres_password
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: products
+      AUTH_INTERNAL_URL: http://auth-service:3001
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_CACHE_TTL_SECONDS: ${REDIS_CACHE_TTL_SECONDS:-60}
+    secrets:
+      - postgres_password
     depends_on:
       postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
       auth-service:
         condition: service_healthy
@@ -82,18 +117,30 @@ services:
       timeout: 5s
       retries: 10
       start_period: 30s
+    networks:
+      - internal
     restart: unless-stopped
 
   review-service:
     build:
       context: ./services/review-service
-    image: jl-ecommerce-review-service
+    image: jl-ecommerce-review-service:${IMAGE_TAG:-v1}
     container_name: jl-ecommerce-review-service
+    cpus: 0.50
+    mem_limit: 256m
+    mem_reservation: 128m
     expose:
       - "3003"
     environment:
       PORT: 3003
-      MONGODB_URI: mongodb://ecommerce:ecommerce@mongo:27017/reviews?authSource=admin
+      MONGODB_USER: ${MONGO_INITDB_ROOT_USERNAME:-ecommerce}
+      MONGODB_PASSWORD_FILE: /run/secrets/mongo_password
+      MONGODB_HOST: mongo
+      MONGODB_PORT: 27017
+      MONGODB_DB: reviews
+      MONGODB_AUTH_SOURCE: admin
+    secrets:
+      - mongo_password
     depends_on:
       mongo:
         condition: service_healthy
@@ -103,46 +150,90 @@ services:
       timeout: 5s
       retries: 10
       start_period: 25s
+    networks:
+      - internal
+    restart: unless-stopped
+
+  redis:
+    image: redis:8-alpine
+    container_name: jl-ecommerce-redis
+    cpus: 0.25
+    mem_limit: 128m
+    mem_reservation: 64m
+    expose:
+      - "6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - internal
     restart: unless-stopped
 
   mongo:
-    image: mongo:7
+    image: mongo:8
     container_name: jl-ecommerce-mongo
+    cpus: 0.75
+    mem_limit: 768m
+    mem_reservation: 384m
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ecommerce
-      MONGO_INITDB_ROOT_PASSWORD: ecommerce
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:-ecommerce}
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_password
     expose:
       - "27017"
     ports:
-      - "27017:27017"
+      - "${MONGO_PORT:-27017}:27017"
+    secrets:
+      - mongo_password
     volumes:
       - jl-ecommerce-mongodata:/data/db
     healthcheck:
-      test: [ "CMD-SHELL", "mongosh --quiet -u ecommerce -p ecommerce --authenticationDatabase admin --eval \"db.adminCommand('ping').ok\" | grep 1" ]
-      interval: 10s
+      test: [ "CMD-SHELL", "mongosh --quiet -u \"$${MONGO_INITDB_ROOT_USERNAME}\" -p \"$$(cat /run/secrets/mongo_password)\" --authenticationDatabase admin --eval \"db.adminCommand('ping').ok\" | grep 1" ]
+      interval: 30s
       timeout: 5s
       retries: 10
       start_period: 15s
+    networks:
+      - internal
     restart: unless-stopped
 
   postgres:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     container_name: jl-ecommerce-postgres
+    cpus: 0.75
+    mem_limit: 768m
+    mem_reservation: 384m
     environment:
-      POSTGRES_USER: ecommerce
-      POSTGRES_PASSWORD: ecommerce
+      POSTGRES_USER: ${POSTGRES_USER:-ecommerce}
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       POSTGRES_DB: products
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
+    secrets:
+      - postgres_password
     volumes:
-      - jl-ecommerce-pgdata:/var/lib/postgresql/data
+      - jl-ecommerce-pgdata:/var/lib/postgresql
       - ./scripts/postgres-init-auth-db.sql:/docker-entrypoint-initdb.d/01-auth-db.sql:ro
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ecommerce -d products" ]
+      test: [ "CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\"" ]
       interval: 5s
       timeout: 5s
       retries: 10
+    networks:
+      - internal
     restart: unless-stopped
+
+secrets:
+  postgres_password:
+    file: ${POSTGRES_PASSWORD_FILE:-./secrets/postgres_password.example}
+  mongo_password:
+    file: ${MONGO_PASSWORD_FILE:-./secrets/mongo_password.example}
+
+networks:
+  public:
+  internal:
+    internal: true
 
 volumes:
   jl-ecommerce-pgdata:

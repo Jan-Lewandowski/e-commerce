@@ -1,4 +1,6 @@
 import * as productService from '../services/productService.js';
+import { redisCacheTtlSeconds } from '../../../config/env.js';
+import { getCache, setCache } from '../../../db/redis.js';
 
 export async function getCategories(_req, res, next) {
   try {
@@ -10,7 +12,26 @@ export async function getCategories(_req, res, next) {
 
 export async function getProducts(req, res, next) {
   try {
-    res.json(await productService.getProducts(req.query));
+    const cacheKey = `products:${req.originalUrl}`;
+    const cached = await getCache(cacheKey).catch((err) => {
+      console.warn('[redis] cache read skipped:', err.message);
+      return null;
+    });
+
+    if (cached) {
+      res.set('X-Cache', 'HIT');
+      res.type('application/json').send(cached);
+      return;
+    }
+
+    const products = await productService.getProducts(req.query);
+    res.set('X-Cache', 'MISS');
+
+    await setCache(cacheKey, JSON.stringify(products), redisCacheTtlSeconds).catch((err) => {
+      console.warn('[redis] cache write skipped:', err.message);
+    });
+
+    res.json(products);
   } catch (err) {
     next(err);
   }

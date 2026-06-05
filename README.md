@@ -19,17 +19,15 @@ An example full-stack e-commerce demo implemented as modular services (frontend,
 - Reviews service with seeding and aggregation
 
 ## Technologies
-Below is a concise list of technologies and libraries used across the project by area.
-
 - **Frontend**: Next.js, React, TypeScript, Tailwind CSS, Material UI (MUI), TanStack Query, Formik, Yup
 - **Auth service**: Node.js, Express, Knex (migrations & seeds), PostgreSQL, bcryptjs, dotenv
-- **Product service**: Node.js, Express, Knex, Prisma (schema + migrations), Sequelize, PostgreSQL
+- **Product service**: Node.js, Express, Knex, Prisma (schema + migrations), Sequelize, PostgreSQL, Redis cache proof
 - **Review service**: Node.js, Express, MongoDB native driver, Mongoose
-- **API & infra**: RESTful services, NGINX as reverse proxy, Next.js rewrites for backend proxying, Docker & Docker Compose
+- **API & infra**: RESTful services, NGINX as reverse proxy, Docker & Docker Compose
 
 ## Run
 
-### Option A — Docker Compose (recommended)
+### Option A - Docker Compose (recommended)
 
 ```bash
 docker compose up --build
@@ -37,18 +35,31 @@ docker compose up --build
 
 Open **http://localhost** (NGINX on port 80).
 
+The root `.env.example` documents Compose defaults. Compose reads database passwords from files under `secrets/`; the committed `*.example` files are used by default so the project can start without extra setup. For private local values, copy them without the `.example` suffix and point `POSTGRES_PASSWORD_FILE` / `MONGO_PASSWORD_FILE` at the new files.
+
 Services started:
-- **NGINX** — public entry point
-- **frontend** — Next.js (same-origin `/api/*` calls)
-- **auth-service** — Postgres-backed users/sessions (Knex migrate + seed)
-- **product-service** — Knex + Prisma migrations + seed
-- **review-service** — MongoDB seed + reviews API
-- **postgres** — databases `products` and `auth`
-- **mongo** — database `reviews`
+- **NGINX** - public entry point
+- **frontend** - Next.js (same-origin `/api/*` calls)
+- **auth-service** - Postgres-backed users/sessions (Knex migrate + seed)
+- **product-service** - Knex + Prisma migrations + seed, plus Redis-backed cache proof on `GET /api/products`
+- **review-service** - MongoDB seed + reviews API
+- **redis** - supporting cache component
+- **postgres** - databases `products` and `auth`
+- **mongo** - database `reviews`
 
 Seed admin: `admin@example.com` / `password`
 
-### Option B — All services on host (dev)
+Application images are tagged with `${IMAGE_TAG:-v1}`. Use `IMAGE_TAG=v2`, `IMAGE_TAG=v3`, etc. when you want to build the next local version.
+
+Postgres and MongoDB host ports are exposed in `docker-compose.yml` for simple local development. Production deployments should remove those host port mappings and keep databases reachable only on the internal Docker network.
+
+Redis proof:
+
+```bash
+docker compose exec redis redis-cli ping
+```
+
+### Option B - All services on host (dev)
 
 1. Start Postgres (e.g. `docker compose up postgres -d`) and ensure both databases exist: `products` and `auth`.
 2. **auth-service:**
